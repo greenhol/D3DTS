@@ -12,18 +12,18 @@ import { Cube } from './data/world/cube';
 })
 export class AppComponent {
   
-private world = new BellCurve();
-// private world = new RandomPoints();
-// private world = new CartesianAxes();
-// private world = new Cube();
-// private world = new Grid();
+public world = new BellCurve();
+// public world = new RandomPoints();
+// public world = new CartesianAxes();
+// public world = new Cube();
+// public world = new Grid();
 
-private cameraAngleX: number = Math.PI * 6 / 5 - Math.PI;
-private cameraAngleY: number = 0;
-private cameraAngleZ: number = 0;
-private cameraPosX: number = 0;
-private cameraPosY: number = 0;
-private cameraPosZ: number = -5;
+public cameraAngleX: number = Math.PI * 6 / 5 - Math.PI;
+public cameraAngleY: number = 0;
+public cameraAngleZ: number = 0;
+public cameraPosX: number = 0;
+public cameraPosY: number = 0;
+public cameraPosZ: number = -5;
 
   public changeAngleX(event) {
     this.cameraAngleX = Math.PI * event / 50 - Math.PI;
