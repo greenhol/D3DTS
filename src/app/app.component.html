@@ -1,3 +1,26 @@
-<h1>
-  {{title}}
-</h1>
+<d3d-stage [world]="world"
+           [cameraAngleX]="cameraAngleX"
+           [cameraAngleY]="cameraAngleY"
+           [cameraAngleZ]="cameraAngleZ"
+           [cameraPosX]="cameraPosX"
+           [cameraPosY]="cameraPosY"
+[cameraPosZ]="cameraPosZ">
+</d3d-stage>
+<div class="sliderArea">
+    <div class="sliderTitle">X-Angle</div><input #refAX type="range" class="slider" (input)="changeAngleX(refAX.value)" value="60">    
+</div>
+<div class="sliderArea">
+    <div class="sliderTitle">Y-Angle</div><input #refAY type="range" class="slider" (input)="changeAngleY(refAY.value)">    
+</div>
+<div class="sliderArea">
+    <div class="sliderTitle">Z-Angle</div><input #refAZ type="range" class="slider" (input)="changeAngleZ(refAZ.value)">    
+</div>
+<div class="sliderArea">
+    <div class="sliderTitle">X-Pos</div><input #refPX type="range" class="slider" (input)="changePosX(refPX.value)">    
+</div>
+<div class="sliderArea">
+    <div class="sliderTitle">Y-Pos</div><input #refPY type="range" class="slider" (input)="changePosY(refPY.value)">    
+</div>
+<div class="sliderArea">
+    <div class="sliderTitle">Z-Pos</div><input #refPZ type="range" class="slider" (input)="changePosZ(refPZ.value)">    
+</div>

@@ -1,0 +1,20 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 21px;
+}
+
+.sliderArea {
+    display: flex;
+    flex-direction: row;
+}
+
+.sliderTitle {
+    width: 100px;
+}
+
+.slider {
+    width: 500px;
+    margin: 0 20px;
+}
