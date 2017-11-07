@@ -1,3 +1,6 @@
+<!-- <d3d-stage [world]="world">
+</d3d-stage> -->
+
 <d3d-stage [world]="world"
            [cameraAngleX]="cameraAngleX"
            [cameraAngleY]="cameraAngleY"
@@ -7,20 +10,38 @@
 [cameraPosZ]="cameraPosZ">
 </d3d-stage>
 <div class="sliderArea">
-    <div class="sliderTitle">X-Angle</div><input #refAX type="range" class="slider" (input)="changeAngleX(refAX.value)" value="60">    
+    <div class="sliderTitle" [ngClass]="{'sliderTitle-disabled': world.animateCameraRotationX !== undefined }">
+        X-Angle
+    </div>
+    <input [disabled]="world.animateCameraRotationX !== undefined" #refAX type="range" class="slider" (input)="changeAngleX(refAX.value)" value="60">    
 </div>
 <div class="sliderArea">
-    <div class="sliderTitle">Y-Angle</div><input #refAY type="range" class="slider" (input)="changeAngleY(refAY.value)">    
+        <div class="sliderTitle" [ngClass]="{'sliderTitle-disabled': world.animateCameraRotationY !== undefined }">
+        Y-Angle
+    </div>
+    <input [disabled]="world.animateCameraRotationY !== undefined" #refAY type="range" class="slider" (input)="changeAngleY(refAY.value)">    
 </div>
 <div class="sliderArea">
-    <div class="sliderTitle">Z-Angle</div><input #refAZ type="range" class="slider" (input)="changeAngleZ(refAZ.value)">    
+    <div class="sliderTitle" [ngClass]="{'sliderTitle-disabled': world.animateCameraRotationZ !== undefined }">
+        Z-Angle
+    </div>
+    <input [disabled]="world.animateCameraRotationZ !== undefined" #refAZ type="range" class="slider" (input)="changeAngleZ(refAZ.value)">    
 </div>
 <div class="sliderArea">
-    <div class="sliderTitle">X-Pos</div><input #refPX type="range" class="slider" (input)="changePosX(refPX.value)">    
+    <div class="sliderTitle" [ngClass]="{'sliderTitle-disabled': world.animateCameraPositionX !== undefined }">
+        X-Pos
+    </div>
+    <input [disabled]="world.animateCameraPositionX !== undefined" #refPX type="range" class="slider" (input)="changePosX(refPX.value)">    
 </div>
 <div class="sliderArea">
-    <div class="sliderTitle">Y-Pos</div><input #refPY type="range" class="slider" (input)="changePosY(refPY.value)">    
+    <div class="sliderTitle" [ngClass]="{'sliderTitle-disabled': world.animateCameraPositionY !== undefined }">
+        Y-Pos
+    </div>
+    <input [disabled]="world.animateCameraPositionY !== undefined" #refPY type="range" class="slider" (input)="changePosY(refPY.value)">    
 </div>
 <div class="sliderArea">
-    <div class="sliderTitle">Z-Pos</div><input #refPZ type="range" class="slider" (input)="changePosZ(refPZ.value)">    
+    <div class="sliderTitle" [ngClass]="{'sliderTitle-disabled': world.animateCameraPositionZ !== undefined }">
+        Z-Pos
+    </div>
+    <input [disabled]="world.animateCameraPositionZ !== undefined" #refPZ type="range" class="slider" (input)="changePosZ(refPZ.value)">    
 </div>

@@ -11,7 +11,13 @@
 }
 
 .sliderTitle {
+    margin: 2px;
     width: 100px;
+}
+
+.sliderTitle-disabled {
+    color: darkgray;
+    background-color: gray;
 }
 
 .slider {
