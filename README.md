@@ -21,3 +21,5 @@ The stage is an angular component which has inputs for the camera position and r
 ![](./Screenshot_01.gif "D3DTS")
 
 ![](./Screenshot_02.gif "D3DTS")
+
+![](./Screenshot_03.gif "D3DTS")
