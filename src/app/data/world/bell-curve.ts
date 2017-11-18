@@ -4,10 +4,10 @@ export class BellCurve extends World {
     private static SIZE = 15;
     private static DIST = 0.15;
     
-    constructor() {
-        super();
+    public init() {
+        this.reset();
         this.cameraStartPosition.position.z = -5;
-        this.cameraStartPosition.angleX = Math.PI * 6 / 5 - Math.PI;
+        this.cameraStartPosition.angleX = 0;
         for (let i = -BellCurve.SIZE; i < BellCurve.SIZE; i++) {
             for (let j = -BellCurve.SIZE; j < BellCurve.SIZE; j++) {
                 this.dots.push({x: BellCurve.DIST * i, y: 0, z: BellCurve.DIST * j});

@@ -16,6 +16,7 @@
     <select class="dropdown" [(ngModel)]="worldSelector" (ngModelChange)="onDropDownChange($event)">
         <option *ngFor="let worldSelector of worlds" [ngValue]="worldSelector">{{worldSelector.displayName}}</option>
     </select>
+    <button class="button" (click)="onResetClick()">Reset</button>
 </div>
 <div class="optionArea">
     <div class="otionTitle" [ngClass]="{'optionTitle-disabled': world.animateCameraRotationX !== undefined }">

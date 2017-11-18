@@ -48,32 +48,8 @@ const STAGE_FAR = 20;
 export class StageComponent {
 
   @Input() public set world(world: World) {
-    
-        if (!world) {
-          this.worldDots = [];
-          this.worldShapes = [];
-          return;
-        }
-    
-        this.flushElements();    
-        this.flushAnimation();
-        
-        this.worldDots = world.dots;
-        this.worldShapes = world.shapes;
-
-        this.rxMatrix.angle = world.cameraStartPosition.angleX;
-        this.ryMatrix.angle = world.cameraStartPosition.angleY;
-        this.rzMatrix.angle = world.cameraStartPosition.angleZ;
-        this.tMatrix.vector = world.cameraStartPosition.position;
-    
-        this.createData();
-        this.createElements();
-        this.updateElements();
-    
-        if (world.hasAnimation) {
-          this.startAnimation(world);
-        }
-      }
+    this.injectWorld(world);
+  }
 
   @Input() public set cameraAngleX(angle: number) {
     this.rxMatrix.angle = angle;
@@ -166,6 +142,34 @@ export class StageComponent {
     // Group
     this.svgg = this.svg.append('g')
       .attr('transform', 'translate(.5, .5)');
+  }
+
+  public injectWorld(world: World): void {
+    
+    if (!world) {
+      this.worldDots = [];
+      this.worldShapes = [];
+      return;
+    }
+
+    this.flushElements();    
+    this.flushAnimation();
+    
+    this.worldDots = world.dots;
+    this.worldShapes = world.shapes;
+
+    this.rxMatrix.angle = world.cameraStartPosition.angleX;
+    this.ryMatrix.angle = world.cameraStartPosition.angleY;
+    this.rzMatrix.angle = world.cameraStartPosition.angleZ;
+    this.tMatrix.vector = world.cameraStartPosition.position;
+
+    this.createData();
+    this.createElements();
+    this.updateElements();
+
+    if (world.hasAnimation) {
+      this.startAnimation(world);
+    }
   }
 
   private transform() {

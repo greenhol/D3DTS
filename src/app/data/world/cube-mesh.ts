@@ -1,8 +1,8 @@
 import { World, SpaceCoord } from './world';
 
 export class CubeMesh extends World {
-    constructor() {
-        super();
+    public init() {
+        this.reset();
         this.cameraStartPosition.position.z = -5;
         this.cameraStartPosition.angleX = Math.PI * 6 / 5 - Math.PI;
         this.shapes = [

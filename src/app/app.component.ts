@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ApplicationRef, ViewChild } from '@angular/core';
 import { BellCurve } from './data/world/bell-curve';
 import { RandomPoints } from './data/world/random-points';
 import { CartesianAxes } from './data/world/cartesian-axes';
@@ -7,7 +7,7 @@ import { Cube } from './data/world/cube';
 import { BouncingParticles } from './data/world/bouncing-particles';
 import { CubeMesh } from './data/world/cube-mesh';
 import { World } from 'app/data/world/world';
-import { debug } from 'util';
+import { StageComponent } from 'app/components/stage/stage.component';
 
 interface WorldSelector {
   displayName: string;
@@ -40,12 +40,15 @@ export class AppComponent {
   public cameraPosY: number = 0;
   public cameraPosZ: number = 0;
 
-  constructor() {
+  @ViewChild(StageComponent) private stage: StageComponent;
+
+  constructor(private appRef: ApplicationRef) {
     this.onDropDownChange(this.worlds[0]);
   }
 
   public onDropDownChange(event: WorldSelector) {
     this.world = event.world;
+    this.world.init();
     this.cameraAngleX = this.world.cameraStartPosition.angleX;
     this.cameraAngleY = this.world.cameraStartPosition.angleY;
     this.cameraAngleZ = this.world.cameraStartPosition.angleZ;
@@ -53,4 +56,10 @@ export class AppComponent {
     this.cameraPosY = this.world.cameraStartPosition.position.y;
     this.cameraPosZ = this.world.cameraStartPosition.position.z;
   }
+
+  public onResetClick(): void {
+    this.onDropDownChange(this.worldSelector);
+    this.stage.injectWorld(this.world);
+  }
+
 }

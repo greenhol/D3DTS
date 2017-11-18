@@ -4,11 +4,11 @@ export class Grid extends World {
     private static SIZE = 1;
     private static DIST = 0.2;
     
-    constructor() {
-        super();
+    public init() {
+        this.reset();
         this.cameraStartPosition.position.z = -5;
-        this.cameraStartPosition.angleX = Math.PI * 6 / 5 - Math.PI;
-        this.cameraStartPosition.angleY = Math.PI / 4 - Math.PI;
+        this.cameraStartPosition.angleX = 0;
+        this.cameraStartPosition.angleY = 0;
 
         for (let i = -Grid.SIZE; i <= Grid.SIZE; i+=Grid.DIST) {
             for (let j = -Grid.SIZE; j <= Grid.SIZE; j+=Grid.DIST) {

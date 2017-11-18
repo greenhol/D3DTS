@@ -1,8 +1,8 @@
 import { World, SpaceCoord } from './world';
 
 export class Cube extends World {
-    constructor() {
-        super();
+    public init() {
+        this.reset();
         this.dots = [
             {x: -1, y: -1, z: -1},
             {x: -1, y: -1, z: 1},

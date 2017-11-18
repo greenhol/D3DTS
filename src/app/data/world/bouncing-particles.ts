@@ -10,14 +10,14 @@ interface Particle {
 
 export class BouncingParticles extends World {
   private static ACCELERATION = 0.01;
-  private static BOX_X = 5;
-  private static BOX_Z = 5;
+  private static BOX_X = 2;
+  private static BOX_Z = 2;
   private static BOX_HEIGHT = 5;
   private static CYLINDER = 2;
   private particles: Particle[];
 
-  constructor() {
-    super();
+  public init() {
+    this.reset();
     this.cameraStartPosition.position.z = -5;
     this.cameraStartPosition.angleX = Math.PI * 6 / 5 - Math.PI;
 
@@ -77,8 +77,6 @@ export class BouncingParticles extends World {
       });
     }
     this.dots = this.particles.map((particle: Particle) => particle.position);
-
-    console.log(this.particles);
   }
 
   public animateCoord(t: number): void {
