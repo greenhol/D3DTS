@@ -6,18 +6,23 @@ import { Matrix, IdentityMatrix, RotaryMatrix, TranslateMatrix, AxisEnum } from 
 interface PlaneCoord {
   x: number;
   y: number;
-  dist: number;
 }
 
 interface PixelCoord {
   left: number;
   top: number;
-  dist: number;
 }
 
 interface Point {
-  world: SpaceCoord,
-  pixel: PixelCoord
+  world: SpaceCoord;
+  pixel: PixelCoord;
+  dist: number;
+}
+
+interface Shape {
+  world: SpaceCoord[];
+  pixel: PixelCoord[];
+  dist: number;
 }
 
 // const STAGE_WIDTH = 1900;
@@ -44,15 +49,17 @@ export class StageComponent {
 
   @Input() public set world(world: World) {
     
-    this.worldPoints = world.coord;
+    this.worldDots = world.dots;
+    this.worldShapes = world.shapes;
+
     this.rxMatrix.angle = world.cameraStartPosition.angleX;
     this.ryMatrix.angle = world.cameraStartPosition.angleY;
     this.rzMatrix.angle = world.cameraStartPosition.angleZ;
     this.tMatrix.vector = world.cameraStartPosition.position;
 
     this.createData();
-    this.createPoints();
-    this.updatePoints();
+    this.createElements();
+    this.updateElements();
 
     if (world.hasAnimation) {
       let t = 0;
@@ -60,6 +67,8 @@ export class StageComponent {
         t++;
         if (world.animateCoord) {
           world.animateCoord(t);
+          this.worldDots = world.dots;
+          this.worldShapes = world.shapes;
         }
         if (world.animateCameraRotationX) {
           this.rxMatrix.angle = world.animateCameraRotationX(t);
@@ -79,7 +88,6 @@ export class StageComponent {
         if (world.animateCameraPositionZ) {
           this.tMatrix.z = world.animateCameraPositionZ(t);
         }
-        this.worldPoints = world.coord;
         this.transform();
       }, 40);
     }
@@ -124,33 +132,37 @@ export class StageComponent {
   private rzMatrix: RotaryMatrix = new RotaryMatrix(AxisEnum.Z, 0);
   private tMatrix: TranslateMatrix = new TranslateMatrix({x: 0, y: 0, z: 0});
   
-  private worldPoints: SpaceCoord[];
-  private data: Point[] = [];
+  private worldDots: SpaceCoord[];
+  private projectedDots: Point[] = [];
+  private worldShapes: SpaceCoord[][];
+  private projectedShapes: Shape[] = [];
 
   private static spaceToPlane(coord: SpaceCoord): PlaneCoord {
     if (coord.z < STAGE_NEAR) {
       return {
         x: 0,
-        y: 0,
-        dist: -1
+        y: 0
       }
     }
 
-    let lambda = 1/coord.z;
-    let dist = (STAGE_NEAR*(STAGE_FAR-coord.z))/(coord.z*(STAGE_FAR-STAGE_NEAR));
-
+    const lambda = 1/coord.z;
     return {
       x: lambda * coord.x,
-      y: lambda * coord.y,
-      dist: dist
+      y: lambda * coord.y
     }
+  }
+
+  private static distanceToCamera(coord: SpaceCoord): number {
+    if (coord.z < STAGE_NEAR) {
+      return -1;
+    }
+    return (STAGE_NEAR*(STAGE_FAR-coord.z))/(coord.z*(STAGE_FAR-STAGE_NEAR));
   }
 
   private static planeToPixel(coord: PlaneCoord): PixelCoord {
     return {
       left: STAGE_WIDTH_HALF * coord.x * STAGE_RATIO_INVERTED + STAGE_WIDTH_HALF,
-      top: -STAGE_HEIGHT_HALF * coord.y + STAGE_HEIGHT_HALF,
-      dist: coord.dist
+      top: -STAGE_HEIGHT_HALF * coord.y + STAGE_HEIGHT_HALF
     }
   }
 
@@ -174,7 +186,7 @@ export class StageComponent {
 
   private transform() {
     this.createData();
-    this.updatePoints();    
+    this.updateElements();    
   }
 
   private createData() {
@@ -186,24 +198,60 @@ export class StageComponent {
     myMatrix = Matrix.multiply(myMatrix, this.tMatrix);        
     myMatrix = myMatrix.inv;
 
-    this.data = this.worldPoints.map((point: SpaceCoord) => {
+    // Dots
+    this.projectedDots = this.worldDots.map((point: SpaceCoord) => {
       let v = myMatrix.vectorMultiply(point);
       return {
           world: point,
-          pixel: StageComponent.spaceToPixel(v)
+          pixel: StageComponent.spaceToPixel(v),
+          dist: StageComponent.distanceToCamera(v)
       }
     });
+    this.projectedDots.sort((a: Point, b: Point) => a.dist - b.dist);
 
-    this.data.sort((a: Point, b: Point) => a.pixel.dist - b.pixel.dist);
+    // Shapes
+    this.projectedShapes = this.worldShapes.map((shape: SpaceCoord[]) => {
+      let v = shape.map((vertex: SpaceCoord) => {
+        return myMatrix.vectorMultiply(vertex);
+      });
+
+      let pixel: PixelCoord[] = [];
+      let dist: number = 0;
+      v.forEach((coord: SpaceCoord) => {
+        pixel.push(StageComponent.spaceToPixel(coord));
+        // dist += StageComponent.distanceToCamera(coord);
+      });
+      // dist /= v.length;
+      dist = Math.min.apply(Math, v.map((coord: SpaceCoord) => StageComponent.distanceToCamera(coord)));
+      
+      return {
+          world: shape,
+          pixel: pixel,
+          dist: (dist < 0) ? -1 : 1
+      }
+    });
+    // this.projectedShapes.sort((a: Shape, b: Shape) => a.dist - b.dist);
   }
 
-  private createPoints() {
+  private createElements() {
 
     this.svgg.selectAll('*').remove();
 
-    let shape = 'circle';
+    let shape = 'path';
     this.svgg.selectAll(`${shape}.${shape}`)
-      .data(this.data)
+      .data(this.projectedShapes)
+      .enter()
+      .append(shape)
+      .classed(shape, true)
+      .style('stroke', '#999')
+      .style('fill', 'none')
+      // .style('fill-opacity', 1)
+      .style('stroke-opacity', 1)
+      .style('stroke-width', 0.5);
+
+    shape = 'circle';
+    this.svgg.selectAll(`${shape}.${shape}`)
+      .data(this.projectedDots)
       .enter()
       .append(shape)
       .classed(shape, true)
@@ -214,20 +262,32 @@ export class StageComponent {
       .style('stroke-width', 1);
   }
 
-  private updatePoints() {
-    let shape = 'circle';
+  private updateElements() {
+    let shape = 'path';
     this.svgg.selectAll(`${shape}.${shape}`)
-      .data(this.data)
-      .classed('invisible', (d: Point) => d.pixel.dist < 0)
+      .data(this.projectedShapes)
+      .classed('invisible', (d: Point) => d.dist < 0)
+      .attr('d', (d: Shape) => {
+        let p = 'M' + d.pixel[0].left + ' ' + d.pixel[0].top + ' ';
+        for (let i = 1; i < d.pixel.length; i++) {
+          p += 'L' + d.pixel[i].left + ' ' + d.pixel[i].top + ' ';
+        }
+        return p + 'Z';
+      })
+
+    shape = 'circle';
+    this.svgg.selectAll(`${shape}.${shape}`)
+      .data(this.projectedDots)
+      .classed('invisible', (d: Point) => d.dist < 0)
       .attr('cx', (d: Point) => d.pixel.left)
       .attr('cy', (d: Point) => d.pixel.top)
-      .attr('r', (d: Point) => d.pixel.dist > 0 ? d.pixel.dist * 15 : 0);
+      .attr('r', (d: Point) => d.dist > 0 ? d.dist * 30 : 0);
       // .style('stroke', (d: Point) => {
-      //   let c = Math.round(-255*d.pixel.dist+255);
+      //   let c = Math.round(-255*d.dist+255);
       //   return 'rgb(' + c + ', ' + c + ', ' + c + ')';
       // })
       // .style('fill', (d: Point) => {
-      //   let c = Math.round(-150*d.pixel.dist+200);
+      //   let c = Math.round(-150*d.dist+200);
       //   return 'rgb(' + c + ', ' + c + ', ' + c + ')';
       // });
       // .style('fill', (d: Point) => {

@@ -5,7 +5,7 @@ import { CartesianAxes } from './data/world/cartesian-axes';
 import { Grid } from './data/world/grid';
 import { Cube } from './data/world/cube';
 import { BouncingParticles } from './data/world/bouncing-particles';
-
+import { CubeMesh } from './data/world/cube-mesh';
 
 @Component({
   selector: 'd3d-root',
@@ -19,7 +19,8 @@ export class AppComponent {
 // public world = new CartesianAxes();
 // public world = new Cube();
 // public world = new Grid();
-public world = new BouncingParticles();
+// public world = new BouncingParticles();
+public world = new CubeMesh();
 
 public cameraAngleX: number = Math.PI * 6 / 5 - Math.PI;
 public cameraAngleY: number = 0;

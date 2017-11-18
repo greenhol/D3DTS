@@ -11,9 +11,9 @@ export class CartesianAxes extends World {
         this.cameraStartPosition.angleY = Math.PI / 4 - Math.PI;
 
         for (let i = -CartesianAxes.SIZE; i < CartesianAxes.SIZE; i+=CartesianAxes.DIST) {
-            this.coord.push({x: i, y: 0, z: 0});
-            this.coord.push({x: 0, y: i, z: 0});
-            this.coord.push({x: 0, y: 0, z: i});
+            this.dots.push({x: i, y: 0, z: 0});
+            this.dots.push({x: 0, y: i, z: 0});
+            this.dots.push({x: 0, y: 0, z: i});
         }
     }
     

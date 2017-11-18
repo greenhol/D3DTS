@@ -10,15 +10,15 @@ export class BellCurve extends World {
         this.cameraStartPosition.angleX = Math.PI * 6 / 5 - Math.PI;
         for (let i = -BellCurve.SIZE; i < BellCurve.SIZE; i++) {
             for (let j = -BellCurve.SIZE; j < BellCurve.SIZE; j++) {
-                this.coord.push({x: BellCurve.DIST * i, y: 0, z: BellCurve.DIST * j});
+                this.dots.push({x: BellCurve.DIST * i, y: 0, z: BellCurve.DIST * j});
             }
         }
     }
     
     public animateCoord(t: number): void {
         const amp = 3*Math.sin(t * Math.PI / 180);
-        this.coord.forEach((coord: SpaceCoord) => {
-            coord.y = amp * Math.exp(-(coord.x * coord.x + coord.z * coord.z));
+        this.dots.forEach((dot: SpaceCoord) => {
+            dot.y = amp * Math.exp(-(dot.x * dot.x + dot.z * dot.z));
         });
     }
 

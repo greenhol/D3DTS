@@ -12,7 +12,8 @@ export interface CameraPosition {
 }
   
 export abstract class World {
-    public coord: SpaceCoord[] = [];
+    public dots: SpaceCoord[] = [];
+    public shapes: SpaceCoord[][] = [];
     public cameraStartPosition: CameraPosition = {
         position: {x: 0, y: 0, z: 0},
         angleX: 0,

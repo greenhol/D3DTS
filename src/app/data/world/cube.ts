@@ -3,7 +3,7 @@ import { World, SpaceCoord } from './world';
 export class Cube extends World {
     constructor() {
         super();
-        this.coord = [
+        this.dots = [
             {x: -1, y: -1, z: -1},
             {x: -1, y: -1, z: 1},
             {x: -1, y: 1, z: -1},
@@ -17,7 +17,7 @@ export class Cube extends World {
 
     public animateCoord(t: number): void {
         const amp = Math.cos(5 * t * Math.PI / 180);
-        this.coord = [
+        this.dots = [
             {x: -1 * amp, y: -1 * amp, z: -1 * amp},
             {x: -1 * amp, y: -1 * amp, z: 1 * amp},
             {x: -1 * amp, y: 1 * amp, z: -1 * amp},

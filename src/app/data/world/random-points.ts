@@ -18,41 +18,41 @@ export class RandomPoints extends World {
         this.cameraStartPosition.position.z = -5;
         this.cameraStartPosition.angleX = Math.PI * 6 / 5 - Math.PI;
         
-        this.coord.push({ x: 0, y: 0, z: 0 });
-        let coord: SpaceCoord = JSON.parse(JSON.stringify(this.coord[0]));
-        let lastCoord: SpaceCoord = JSON.parse(JSON.stringify(this.coord[0]));
+        this.dots.push({ x: 0, y: 0, z: 0 });
+        let dot: SpaceCoord = JSON.parse(JSON.stringify(this.dots[0]));
+        let lastDot: SpaceCoord = JSON.parse(JSON.stringify(this.dots[0]));
         let direction: DirectionEnum;
       
         for (let i = 0; i < 1500; i++) {
           direction = Math.floor(Math.random() * 6);
-          coord = JSON.parse(JSON.stringify(lastCoord));
+          dot = JSON.parse(JSON.stringify(lastDot));
           switch (direction) {
             case DirectionEnum.UP:
-              coord.y += RandomPoints.DIST;
+              dot.y += RandomPoints.DIST;
             break;
             case DirectionEnum.DOWN:
-              coord.y -= RandomPoints.DIST;
+              dot.y -= RandomPoints.DIST;
             break;
             case DirectionEnum.LEFT:
-              coord.x += RandomPoints.DIST;
+              dot.x += RandomPoints.DIST;
             break;
             case DirectionEnum.RIGHT:
-              coord.x -= RandomPoints.DIST;
+              dot.x -= RandomPoints.DIST;
             break;
             case DirectionEnum.FORWARD:
-              coord.z -= RandomPoints.DIST;
+              dot.z -= RandomPoints.DIST;
             break;
             case DirectionEnum.BACKWARD:
-              coord.z += RandomPoints.DIST;
+              dot.z += RandomPoints.DIST;
             break;
             default:
             console.log('NOK', direction);
           }
-          if (Math.abs(coord.x) > RandomPoints.AREA || Math.abs(coord.y) > RandomPoints.AREA || Math.abs(coord.z) > RandomPoints.AREA) {
+          if (Math.abs(dot.x) > RandomPoints.AREA || Math.abs(dot.y) > RandomPoints.AREA || Math.abs(dot.z) > RandomPoints.AREA) {
             continue;
           }
-          lastCoord = JSON.parse(JSON.stringify(coord));
-          this.coord.push(JSON.parse(JSON.stringify(lastCoord)));
+          lastDot = JSON.parse(JSON.stringify(dot));
+          this.dots.push(JSON.parse(JSON.stringify(lastDot)));
         }
     }
     
