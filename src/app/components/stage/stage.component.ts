@@ -49,49 +49,31 @@ export class StageComponent {
 
   @Input() public set world(world: World) {
     
-    this.worldDots = world.dots;
-    this.worldShapes = world.shapes;
+        if (!world) {
+          this.worldDots = [];
+          this.worldShapes = [];
+          return;
+        }
+    
+        this.flushElements();    
+        this.flushAnimation();
+        
+        this.worldDots = world.dots;
+        this.worldShapes = world.shapes;
 
-    this.rxMatrix.angle = world.cameraStartPosition.angleX;
-    this.ryMatrix.angle = world.cameraStartPosition.angleY;
-    this.rzMatrix.angle = world.cameraStartPosition.angleZ;
-    this.tMatrix.vector = world.cameraStartPosition.position;
-
-    this.createData();
-    this.createElements();
-    this.updateElements();
-
-    if (world.hasAnimation) {
-      let t = 0;
-      setInterval(() => {
-        t++;
-        if (world.animateCoord) {
-          world.animateCoord(t);
-          this.worldDots = world.dots;
-          this.worldShapes = world.shapes;
+        this.rxMatrix.angle = world.cameraStartPosition.angleX;
+        this.ryMatrix.angle = world.cameraStartPosition.angleY;
+        this.rzMatrix.angle = world.cameraStartPosition.angleZ;
+        this.tMatrix.vector = world.cameraStartPosition.position;
+    
+        this.createData();
+        this.createElements();
+        this.updateElements();
+    
+        if (world.hasAnimation) {
+          this.startAnimation(world);
         }
-        if (world.animateCameraRotationX) {
-          this.rxMatrix.angle = world.animateCameraRotationX(t);
-        }
-        if (world.animateCameraRotationY) {
-          this.ryMatrix.angle = world.animateCameraRotationY(t);
-        }
-        if (world.animateCameraRotationZ) {
-          this.rzMatrix.angle = world.animateCameraRotationZ(t);
-        }
-        if (world.animateCameraPositionX) {
-          this.tMatrix.x = world.animateCameraPositionX(t);
-        }
-        if (world.animateCameraPositionY) {
-          this.tMatrix.y = world.animateCameraPositionY(t);
-        }
-        if (world.animateCameraPositionZ) {
-          this.tMatrix.z = world.animateCameraPositionZ(t);
-        }
-        this.transform();
-      }, 40);
-    }
-  }
+      }
 
   @Input() public set cameraAngleX(angle: number) {
     this.rxMatrix.angle = angle;
@@ -136,6 +118,8 @@ export class StageComponent {
   private projectedDots: Point[] = [];
   private worldShapes: SpaceCoord[][];
   private projectedShapes: Shape[] = [];
+
+  private timer: number;
 
   private static spaceToPlane(coord: SpaceCoord): PlaneCoord {
     if (coord.z < STAGE_NEAR) {
@@ -233,9 +217,48 @@ export class StageComponent {
     // this.projectedShapes.sort((a: Shape, b: Shape) => a.dist - b.dist);
   }
 
-  private createElements() {
+  private flushAnimation() {
+    clearInterval(this.timer);
+  }
 
-    this.svgg.selectAll('*').remove();
+  private startAnimation(world: World) {
+    let t = 0;
+    this.timer = setInterval(() => {
+      t++;
+      if (world.animateCoord) {
+        world.animateCoord(t);
+        this.worldDots = world.dots;
+        this.worldShapes = world.shapes;
+      }
+      if (world.animateCameraRotationX) {
+        this.rxMatrix.angle = world.animateCameraRotationX(t);
+      }
+      if (world.animateCameraRotationY) {
+        this.ryMatrix.angle = world.animateCameraRotationY(t);
+      }
+      if (world.animateCameraRotationZ) {
+        this.rzMatrix.angle = world.animateCameraRotationZ(t);
+      }
+      if (world.animateCameraPositionX) {
+        this.tMatrix.x = world.animateCameraPositionX(t);
+      }
+      if (world.animateCameraPositionY) {
+        this.tMatrix.y = world.animateCameraPositionY(t);
+      }
+      if (world.animateCameraPositionZ) {
+        this.tMatrix.z = world.animateCameraPositionZ(t);
+      }
+      this.transform();
+    }, 40);
+  }
+
+  private flushElements() {
+    this.svgg.selectAll('*').remove();    
+  }
+
+  private createElements() {
+    
+    this.flushElements();
 
     let shape = 'path';
     this.svgg.selectAll(`${shape}.${shape}`)

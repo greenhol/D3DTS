@@ -15,7 +15,7 @@ export abstract class World {
     public dots: SpaceCoord[] = [];
     public shapes: SpaceCoord[][] = [];
     public cameraStartPosition: CameraPosition = {
-        position: {x: 0, y: 0, z: 0},
+        position: {x: 0, y: 0, z: -5},
         angleX: 0,
         angleY: 0,
         angleZ: 0

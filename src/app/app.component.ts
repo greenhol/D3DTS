@@ -6,6 +6,13 @@ import { Grid } from './data/world/grid';
 import { Cube } from './data/world/cube';
 import { BouncingParticles } from './data/world/bouncing-particles';
 import { CubeMesh } from './data/world/cube-mesh';
+import { World } from 'app/data/world/world';
+import { debug } from 'util';
+
+interface WorldSelector {
+  displayName: string;
+  world: World;
+}
 
 @Component({
   selector: 'd3d-root',
@@ -14,42 +21,36 @@ import { CubeMesh } from './data/world/cube-mesh';
 })
 export class AppComponent {
   
-// public world = new BellCurve();
-// public world = new RandomPoints();
-// public world = new CartesianAxes();
-// public world = new Cube();
-// public world = new Grid();
-// public world = new BouncingParticles();
-public world = new CubeMesh();
+  public worlds: WorldSelector[] = [
+    {displayName: 'Cartesian Axes', world: new CartesianAxes()},
+    {displayName: 'Bell Curve', world: new BellCurve()},
+    {displayName: 'Random Points', world: new RandomPoints()},
+    {displayName: 'Cube', world: new Cube()},
+    {displayName: 'Grid', world: new Grid()},
+    {displayName: 'Bouncing Particles', world: new BouncingParticles()},
+    {displayName: 'CubeMesh', world: new CubeMesh()}
+  ];
+  public worldSelector: WorldSelector = this.worlds[0];
+  public world: World;
 
-public cameraAngleX: number = Math.PI * 6 / 5 - Math.PI;
-public cameraAngleY: number = 0;
-public cameraAngleZ: number = 0;
-public cameraPosX: number = 0;
-public cameraPosY: number = 0;
-public cameraPosZ: number = -5;
+  public cameraAngleX: number = 0;
+  public cameraAngleY: number = 0;
+  public cameraAngleZ: number = 0;
+  public cameraPosX: number = 0;
+  public cameraPosY: number = 0;
+  public cameraPosZ: number = 0;
 
-  public changeAngleX(event) {
-    this.cameraAngleX = Math.PI * event / 50 - Math.PI;
-  }
-  
-  public changeAngleY(event) {
-    this.cameraAngleY = Math.PI * event / 50 - Math.PI;
-  }
-
-  public changeAngleZ(event) {
-    this.cameraAngleZ = Math.PI * event / 50 - Math.PI;
+  constructor() {
+    this.onDropDownChange(this.worlds[0]);
   }
 
-  public changePosX(event) {
-    this.cameraPosX = event / 10 - 5;
-  }
-
-  public changePosY(event) {
-    this.cameraPosY = event / 10 - 5;
-  }
-
-  public changePosZ(event) {
-    this.cameraPosZ = -event / 10;
+  public onDropDownChange(event: WorldSelector) {
+    this.world = event.world;
+    this.cameraAngleX = this.world.cameraStartPosition.angleX;
+    this.cameraAngleY = this.world.cameraStartPosition.angleY;
+    this.cameraAngleZ = this.world.cameraStartPosition.angleZ;
+    this.cameraPosX = this.world.cameraStartPosition.position.x;
+    this.cameraPosY = this.world.cameraStartPosition.position.y;
+    this.cameraPosZ = this.world.cameraStartPosition.position.z;
   }
 }

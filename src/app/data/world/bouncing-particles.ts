@@ -10,8 +10,8 @@ interface Particle {
 
 export class BouncingParticles extends World {
   private static ACCELERATION = 0.01;
-  private static BOX_X = 2;
-  private static BOX_Z = 2;
+  private static BOX_X = 5;
+  private static BOX_Z = 5;
   private static BOX_HEIGHT = 5;
   private static CYLINDER = 2;
   private particles: Particle[];

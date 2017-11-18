@@ -5,19 +5,24 @@
     font-size: 21px;
 }
 
-.sliderArea {
+.optionArea {
     display: flex;
     flex-direction: row;
 }
 
-.sliderTitle {
+.otionTitle {
     margin: 2px;
     width: 100px;
 }
 
-.sliderTitle-disabled {
+.optionTitle-disabled {
     color: darkgray;
     background-color: gray;
+}
+
+.dropdown {
+    width: 500px;
+    margin: 0 20px;
 }
 
 .slider {
