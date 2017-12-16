@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewEncapsulation, Input } from '@angular/core';
 import { D3Service, D3, Selection } from 'd3-ng2-service';
-import { SpaceCoord, World, SpaceElementTypeEnum } from './../../data/world/world';
+import { SpaceCoord, World, SpaceElementTypeEnum, SpaceDot, SpaceShape } from './../../data/world/world';
 import { Matrix, IdentityMatrix, RotaryMatrix, TranslateMatrix, AxisEnum } from './../../data/matrix/matrix';
 
 interface PlaneCoord {
@@ -13,13 +13,13 @@ interface PixelCoord {
   top: number;
 }
 
-interface Point {
+interface StagePoint {
   world: SpaceCoord;
   pixel: PixelCoord;
   dist: number;
 }
 
-interface Shape {
+interface StageShape {
   world: SpaceCoord[];
   pixel: PixelCoord[];
   dist: number;
@@ -90,10 +90,10 @@ export class StageComponent {
   private rzMatrix: RotaryMatrix = new RotaryMatrix(AxisEnum.Z, 0);
   private tMatrix: TranslateMatrix = new TranslateMatrix({x: 0, y: 0, z: 0});
   
-  private worldDots: SpaceCoord[];
-  private projectedDots: Point[] = [];
-  private worldShapes: SpaceCoord[][];
-  private projectedShapes: Shape[] = [];
+  private worldDots: SpaceDot[];
+  private projectedDots: StagePoint[] = [];
+  private worldShapes: SpaceShape[];
+  private projectedShapes: StageShape[] = [];
   private drawOrder: SpaceElementTypeEnum[];
 
   private timer: number;
@@ -189,19 +189,19 @@ export class StageComponent {
     myMatrix = myMatrix.inv;
 
     // Dots
-    this.projectedDots = this.worldDots.map((point: SpaceCoord) => {
-      let v = myMatrix.vectorMultiply(point);
+    this.projectedDots = this.worldDots.map((point: SpaceDot): StagePoint => {
+      let v = myMatrix.vectorMultiply(point.coord);
       return {
-          world: point,
+          world: point.coord,
           pixel: StageComponent.spaceToPixel(v),
           dist: StageComponent.distanceToCamera(v)
       }
     });
-    this.projectedDots.sort((a: Point, b: Point) => a.dist - b.dist);
+    this.projectedDots.sort((a: StagePoint, b: StagePoint) => a.dist - b.dist);
 
     // Shapes
-    this.projectedShapes = this.worldShapes.map((shape: SpaceCoord[]) => {
-      let v = shape.map((vertex: SpaceCoord) => {
+    this.projectedShapes = this.worldShapes.map((shape: SpaceShape): StageShape => {
+      let v = shape.coord.map((vertex: SpaceCoord) => {
         return myMatrix.vectorMultiply(vertex);
       });
 
@@ -215,7 +215,7 @@ export class StageComponent {
       dist = Math.min.apply(Math, v.map((coord: SpaceCoord) => StageComponent.distanceToCamera(coord)));
       
       return {
-          world: shape,
+          world: shape.coord,
           pixel: pixel,
           dist: (dist < 0) ? -1 : 1
       }
@@ -321,8 +321,8 @@ export class StageComponent {
     const shape = 'path';
     this.svgg.selectAll(`${shape}.${shape}`)
       .data(this.projectedShapes)
-      .classed('invisible', (d: Point) => d.dist < 0)
-      .attr('d', (d: Shape) => {
+      .classed('invisible', (d: StagePoint) => d.dist < 0)
+      .attr('d', (d: StageShape) => {
         let p = 'M' + d.pixel[0].left + ' ' + d.pixel[0].top + ' ';
         for (let i = 1; i < d.pixel.length; i++) {
           p += 'L' + d.pixel[i].left + ' ' + d.pixel[i].top + ' ';
@@ -335,10 +335,10 @@ export class StageComponent {
     const shape = 'circle';
     this.svgg.selectAll(`${shape}.${shape}`)
       .data(this.projectedDots)
-      .classed('invisible', (d: Point) => d.dist < 0)
-      .attr('cx', (d: Point) => d.pixel.left)
-      .attr('cy', (d: Point) => d.pixel.top)
-      .attr('r', (d: Point) => d.dist > 0 ? d.dist * 30 : 0);
+      .classed('invisible', (d: StagePoint) => d.dist < 0)
+      .attr('cx', (d: StagePoint) => d.pixel.left)
+      .attr('cy', (d: StagePoint) => d.pixel.top)
+      .attr('r', (d: StagePoint) => d.dist > 0 ? d.dist * 30 : 0);
       // .style('stroke', (d: Point) => {
       //   let c = Math.round(-255*d.dist+255);
       //   return 'rgb(' + c + ', ' + c + ', ' + c + ')';

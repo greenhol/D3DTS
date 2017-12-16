@@ -1,4 +1,4 @@
-import { World, SpaceCoord } from './world';
+import { World, SpaceCoord, SpaceDot } from './world';
 
 interface Particle {
   position: SpaceCoord;
@@ -22,36 +22,46 @@ export class BouncingParticles extends World {
     this.cameraStartPosition.angleX = Math.PI * 6 / 5 - Math.PI;
 
     this.shapes = [
-      [
-        {x: -BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
-        {x: BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
-        {x: BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z},
-        {x: -BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z}
-      ],
-      [
-        {x: -BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: -BouncingParticles.BOX_Z},
-        {x: -BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
-        {x: BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
-        {x: BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: -BouncingParticles.BOX_Z}
-      ],
-      [
-        {x: -BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: -BouncingParticles.BOX_Z},
-        {x: -BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
-        {x: -BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z},
-        {x: -BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: BouncingParticles.BOX_Z}
-      ],
-      [
-        {x: -BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: BouncingParticles.BOX_Z},
-        {x: -BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z},
-        {x: BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z},
-        {x: BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: BouncingParticles.BOX_Z}
-      ],
-      [
-        {x: BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: BouncingParticles.BOX_Z},
-        {x: BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z},
-        {x: BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
-        {x: BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: -BouncingParticles.BOX_Z}
-      ]
+      {
+        coord: [
+          {x: -BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
+          {x: BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
+          {x: BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z},
+          {x: -BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z}
+        ]
+      },
+      {
+        coord: [
+          {x: -BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: -BouncingParticles.BOX_Z},
+          {x: -BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
+          {x: BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
+          {x: BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: -BouncingParticles.BOX_Z}
+        ]
+      },
+      {
+        coord: [
+          {x: -BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: -BouncingParticles.BOX_Z},
+          {x: -BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
+          {x: -BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z},
+          {x: -BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: BouncingParticles.BOX_Z}
+        ]
+      },
+      {
+        coord: [
+          {x: -BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: BouncingParticles.BOX_Z},
+          {x: -BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z},
+          {x: BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z},
+          {x: BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: BouncingParticles.BOX_Z}
+        ]
+      },
+      {
+        coord: [
+          {x: BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: BouncingParticles.BOX_Z},
+          {x: BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z},
+          {x: BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
+          {x: BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: -BouncingParticles.BOX_Z}
+        ]
+      }
     ];
 
     this.particles = [];
@@ -76,7 +86,9 @@ export class BouncingParticles extends World {
         staticZ: false
       });
     }
-    this.dots = this.particles.map((particle: Particle) => particle.position);
+    this.dots = this.particles.map((particle: Particle): SpaceDot => {
+       return {coord: particle.position};
+    });
   }
 
   public animateCoord(t: number): void {
@@ -114,7 +126,9 @@ export class BouncingParticles extends World {
       if(!particle.staticX) particle.position.y += particle.velocity.y;
       if(!particle.staticX) particle.position.z += particle.velocity.z;      
     });
-    this.dots = this.particles.map((particle: Particle) => particle.position);
+    this.dots = this.particles.map((particle: Particle): SpaceDot => {
+      return {coord: particle.position};
+   });
   }
 
   public animateCameraRotationY(t: number): number {

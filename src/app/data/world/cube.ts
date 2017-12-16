@@ -4,28 +4,28 @@ export class Cube extends World {
     public init() {
         this.reset();
         this.dots = [
-            {x: -1, y: -1, z: -1},
-            {x: -1, y: -1, z: 1},
-            {x: -1, y: 1, z: -1},
-            {x: -1, y: 1, z: 1},
-            {x: 1, y: -1, z: -1},
-            {x: 1, y: -1, z: 1},
-            {x: 1, y: 1, z: -1},
-            {x: 1, y: 1, z: 1},
+            {coord: {x: -1, y: -1, z: -1}},
+            {coord: {x: -1, y: -1, z: 1}},
+            {coord: {x: -1, y: 1, z: -1}},
+            {coord: {x: -1, y: 1, z: 1}},
+            {coord: {x: 1, y: -1, z: -1}},
+            {coord: {x: 1, y: -1, z: 1}},
+            {coord: {x: 1, y: 1, z: -1}},
+            {coord: {x: 1, y: 1, z: 1}},
         ];
     }
 
     public animateCoord(t: number): void {
         const amp = Math.cos(5 * t * Math.PI / 180);
         this.dots = [
-            {x: -1 * amp, y: -1 * amp, z: -1 * amp},
-            {x: -1 * amp, y: -1 * amp, z: 1 * amp},
-            {x: -1 * amp, y: 1 * amp, z: -1 * amp},
-            {x: -1 * amp, y: 1 * amp, z: 1 * amp},
-            {x: 1 * amp, y: -1 * amp, z: -1 * amp},
-            {x: 1 * amp, y: -1 * amp, z: 1 * amp},
-            {x: 1 * amp, y: 1 * amp, z: -1 * amp},
-            {x: 1 * amp, y: 1 * amp, z: 1 * amp},
+            {coord: {x: -1 * amp, y: -1 * amp, z: -1 * amp}},
+            {coord: {x: -1 * amp, y: -1 * amp, z: 1 * amp}},
+            {coord: {x: -1 * amp, y: 1 * amp, z: -1 * amp}},
+            {coord: {x: -1 * amp, y: 1 * amp, z: 1 * amp}},
+            {coord: {x: 1 * amp, y: -1 * amp, z: -1 * amp}},
+            {coord: {x: 1 * amp, y: -1 * amp, z: 1 * amp}},
+            {coord: {x: 1 * amp, y: 1 * amp, z: -1 * amp}},
+            {coord: {x: 1 * amp, y: 1 * amp, z: 1 * amp}}
         ];
     }
 

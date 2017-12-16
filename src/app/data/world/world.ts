@@ -4,6 +4,19 @@ export interface SpaceCoord {
     z: number;
 }
 
+export interface SpaceDot {
+    coord: SpaceCoord
+}
+
+export interface SpaceShape {
+    coord: SpaceCoord[]
+}
+
+export interface SpaceText {
+    coord: SpaceCoord,
+    value: string
+}
+
 export interface CameraPosition {
     position: SpaceCoord;
     angleX: number;
@@ -19,8 +32,8 @@ export enum SpaceElementTypeEnum {
 
 export abstract class World {
 
-    public dots: SpaceCoord[];
-    public shapes: SpaceCoord[][];
+    public dots: SpaceDot[];
+    public shapes: SpaceShape[];
 
     public drawOrder: SpaceElementTypeEnum[] = [
         SpaceElementTypeEnum.SHAPE,
