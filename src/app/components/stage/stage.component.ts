@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewEncapsulation, Input } from '@angular/core';
 import { D3Service, D3, Selection } from 'd3-ng2-service';
-import { SpaceCoord, World } from './../../data/world/world';
+import { SpaceCoord, World, SpaceElementTypeEnum } from './../../data/world/world';
 import { Matrix, IdentityMatrix, RotaryMatrix, TranslateMatrix, AxisEnum } from './../../data/matrix/matrix';
 
 interface PlaneCoord {
@@ -94,6 +94,7 @@ export class StageComponent {
   private projectedDots: Point[] = [];
   private worldShapes: SpaceCoord[][];
   private projectedShapes: Shape[] = [];
+  private drawOrder: SpaceElementTypeEnum[];
 
   private timer: number;
 
@@ -157,6 +158,7 @@ export class StageComponent {
     
     this.worldDots = world.dots;
     this.worldShapes = world.shapes;
+    this.drawOrder = world.drawOrder;
 
     this.rxMatrix.angle = world.cameraStartPosition.angleX;
     this.ryMatrix.angle = world.cameraStartPosition.angleY;
@@ -261,10 +263,21 @@ export class StageComponent {
   }
 
   private createElements() {
-    
     this.flushElements();
+    this.drawOrder.forEach((spaceElementType: SpaceElementTypeEnum) => {
+      switch (spaceElementType) {
+        case SpaceElementTypeEnum.DOT:
+          this.createDots();
+          break;
+        case SpaceElementTypeEnum.SHAPE:
+          this.createShapes();
+          break;
+      }
+    })
+  }
 
-    let shape = 'path';
+  private createShapes() {
+    const shape = 'path';
     this.svgg.selectAll(`${shape}.${shape}`)
       .data(this.projectedShapes)
       .enter()
@@ -275,8 +288,10 @@ export class StageComponent {
       // .style('fill-opacity', 1)
       .style('stroke-opacity', 1)
       .style('stroke-width', 0.5);
+  }
 
-    shape = 'circle';
+  private createDots() {
+    const shape = 'circle';
     this.svgg.selectAll(`${shape}.${shape}`)
       .data(this.projectedDots)
       .enter()
@@ -290,7 +305,20 @@ export class StageComponent {
   }
 
   private updateElements() {
-    let shape = 'path';
+    this.drawOrder.forEach((spaceElementType: SpaceElementTypeEnum) => {
+      switch (spaceElementType) {
+        case SpaceElementTypeEnum.DOT:
+          this.updateDots();
+          break;
+        case SpaceElementTypeEnum.SHAPE:
+          this.updateShapes();
+          break;
+      }
+    })
+  }
+
+  private updateShapes() {
+    const shape = 'path';
     this.svgg.selectAll(`${shape}.${shape}`)
       .data(this.projectedShapes)
       .classed('invisible', (d: Point) => d.dist < 0)
@@ -301,8 +329,10 @@ export class StageComponent {
         }
         return p + 'Z';
       })
+  }
 
-    shape = 'circle';
+  private updateDots() {
+    const shape = 'circle';
     this.svgg.selectAll(`${shape}.${shape}`)
       .data(this.projectedDots)
       .classed('invisible', (d: Point) => d.dist < 0)

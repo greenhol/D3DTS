@@ -10,11 +10,25 @@ export interface CameraPosition {
     angleY: number;
     angleZ: number;
 }
-  
+
+export enum SpaceElementTypeEnum {
+    DOT,
+    SHAPE,
+    TEXT
+}
+
 export abstract class World {
+
     public dots: SpaceCoord[];
     public shapes: SpaceCoord[][];
+
+    public drawOrder: SpaceElementTypeEnum[] = [
+        SpaceElementTypeEnum.SHAPE,
+        SpaceElementTypeEnum.DOT
+    ];
+
     public cameraStartPosition: CameraPosition;
+
     public abstract init(): void;
     public animateCameraRotationX?(t: number): number;
     public animateCameraRotationY?(t: number): number;
@@ -23,13 +37,16 @@ export abstract class World {
     public animateCameraPositionY?(t: number): number;
     public animateCameraPositionZ?(t: number): number;
     public animateCoord?(t: number): void;
+    
     public get hasAnimation(): boolean {
         return !!(this.animateCoord || this.animateCameraRotationX || this.animateCameraRotationY || this.animateCameraRotationZ
             || this.animateCameraPositionX || this.animateCameraPositionY || this.animateCameraPositionZ)
     }
+    
     constructor() {
         this.reset();
     }
+    
     public reset(): void {
         this.dots = [];
         this.shapes = [];
