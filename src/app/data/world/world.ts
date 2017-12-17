@@ -34,10 +34,12 @@ export abstract class World {
 
     public dots: SpaceDot[];
     public shapes: SpaceShape[];
+    public texts: SpaceText[];
 
     public drawOrder: SpaceElementTypeEnum[] = [
         SpaceElementTypeEnum.SHAPE,
-        SpaceElementTypeEnum.DOT
+        SpaceElementTypeEnum.DOT,
+        SpaceElementTypeEnum.TEXT
     ];
 
     public cameraStartPosition: CameraPosition;
@@ -63,6 +65,7 @@ export abstract class World {
     public reset(): void {
         this.dots = [];
         this.shapes = [];
+        this.texts = [];
         this.cameraStartPosition = {
             position: {x: 0, y: 0, z: -5},
             angleX: 0,

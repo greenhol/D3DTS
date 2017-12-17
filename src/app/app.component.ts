@@ -6,6 +6,7 @@ import { Grid } from './data/world/grid';
 import { Cube } from './data/world/cube';
 import { BouncingParticles } from './data/world/bouncing-particles';
 import { CubeMesh } from './data/world/cube-mesh';
+import { Text } from './data/world/text';
 import { World } from 'app/data/world/world';
 import { StageComponent } from 'app/components/stage/stage.component';
 
@@ -28,7 +29,8 @@ export class AppComponent {
     {displayName: 'Cube', world: new Cube()},
     {displayName: 'Grid', world: new Grid()},
     {displayName: 'Bouncing Particles', world: new BouncingParticles()},
-    {displayName: 'CubeMesh', world: new CubeMesh()}
+    {displayName: 'CubeMesh', world: new CubeMesh()},
+    {displayName: 'Text', world: new Text()}    
   ];
   public worldSelector: WorldSelector = this.worlds[0];
   public world: World;

@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewEncapsulation, Input } from '@angular/core';
 import { D3Service, D3, Selection } from 'd3-ng2-service';
-import { SpaceCoord, World, SpaceElementTypeEnum, SpaceDot, SpaceShape } from './../../data/world/world';
+import { SpaceCoord, World, SpaceElementTypeEnum, SpaceDot, SpaceShape, SpaceText } from './../../data/world/world';
 import { Matrix, IdentityMatrix, RotaryMatrix, TranslateMatrix, AxisEnum } from './../../data/matrix/matrix';
 
 interface PlaneCoord {
@@ -23,6 +23,13 @@ interface StageShape {
   world: SpaceCoord[];
   pixel: PixelCoord[];
   dist: number;
+}
+
+interface StageText {
+  world: SpaceCoord;
+  pixel: PixelCoord;
+  dist: number;
+  value: string;
 }
 
 // const STAGE_WIDTH = 1900;
@@ -94,6 +101,8 @@ export class StageComponent {
   private projectedDots: StagePoint[] = [];
   private worldShapes: SpaceShape[];
   private projectedShapes: StageShape[] = [];
+  private worldTexts: SpaceText[];
+  private projectedTexts: StageText[] = [];
   private drawOrder: SpaceElementTypeEnum[];
 
   private timer: number;
@@ -158,6 +167,7 @@ export class StageComponent {
     
     this.worldDots = world.dots;
     this.worldShapes = world.shapes;
+    this.worldTexts = world.texts;
     this.drawOrder = world.drawOrder;
 
     this.rxMatrix.angle = world.cameraStartPosition.angleX;
@@ -221,6 +231,18 @@ export class StageComponent {
       }
     });
     // this.projectedShapes.sort((a: Shape, b: Shape) => a.dist - b.dist);
+
+    // Texts
+    this.projectedTexts = this.worldTexts.map((text: SpaceText): StageText => {
+      let v = myMatrix.vectorMultiply(text.coord);
+      return {
+          world: text.coord,
+          pixel: StageComponent.spaceToPixel(v),
+          dist: StageComponent.distanceToCamera(v),
+          value: text.value
+      }
+    });
+    this.projectedTexts.sort((a: StageText, b: StageText) => a.dist - b.dist);
   }
 
   private flushAnimation() {
@@ -272,6 +294,9 @@ export class StageComponent {
         case SpaceElementTypeEnum.SHAPE:
           this.createShapes();
           break;
+        case SpaceElementTypeEnum.TEXT:
+          this.createTexts();
+          break;
       }
     })
   }
@@ -304,6 +329,21 @@ export class StageComponent {
       .style('stroke-width', 1);
   }
 
+  private createTexts() {
+    console.log('creating texts ', this.worldTexts);
+    const shape = 'text';
+    this.svgg.selectAll(`${shape}.${shape}`)
+      .data(this.projectedTexts)
+      .enter()
+      .append(shape)
+      .classed(shape, true)
+      .style('stroke', 'none')
+      .style('fill', '#999')
+      .attr('xml:space', 'preserve')
+      // .style('text-anchor', 'middle')
+      .style('alignment-baseline', 'central');
+  }
+
   private updateElements() {
     this.drawOrder.forEach((spaceElementType: SpaceElementTypeEnum) => {
       switch (spaceElementType) {
@@ -312,6 +352,9 @@ export class StageComponent {
           break;
         case SpaceElementTypeEnum.SHAPE:
           this.updateShapes();
+          break;
+        case SpaceElementTypeEnum.TEXT:
+          this.updateTexts();
           break;
       }
     })
@@ -357,6 +400,17 @@ export class StageComponent {
       //   }
       //   return '#eee';
       // });
+  }
+
+  private updateTexts() {
+    const shape = 'text';
+    this.svgg.selectAll(`${shape}.${shape}`)
+      .data(this.projectedTexts)
+      .classed('invisible', (d: StagePoint) => d.dist < 0)
+      .attr('x', (d: StageText) => d.pixel.left)
+      .attr('y', (d: StageText) => d.pixel.top)
+      .attr('font-size', (d: StageText) => d.dist > 0 ? d.dist * 120 + 'px' : '0px')
+      .text((d: StageText) => d.value);
   }
 
 }
