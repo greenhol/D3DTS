@@ -1,4 +1,4 @@
-import { World, SpaceCoord } from './world';
+import { World } from './world';
 
 export class Cube extends World {
     public init() {

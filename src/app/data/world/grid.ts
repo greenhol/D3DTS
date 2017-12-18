@@ -1,4 +1,4 @@
-import { World, SpaceCoord } from './world';
+import { World } from './world';
 
 export class Grid extends World {
     private static SIZE = 1;

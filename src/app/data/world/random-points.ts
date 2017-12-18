@@ -1,4 +1,4 @@
-import { World, SpaceCoord, SpaceDot } from './world';
+import { World, SpaceDot } from './world';
 
 enum DirectionEnum {
     'UP',

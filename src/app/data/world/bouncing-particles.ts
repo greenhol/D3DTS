@@ -21,14 +21,15 @@ export class BouncingParticles extends World {
     this.cameraStartPosition.position.z = -5;
     this.cameraStartPosition.angleX = Math.PI * 6 / 5 - Math.PI;
 
-    this.shapes = [
+    this.paths = [
       {
         coord: [
           {x: -BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
           {x: BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
           {x: BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z},
           {x: -BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z}
-        ]
+        ],
+        close: true
       },
       {
         coord: [
@@ -36,7 +37,8 @@ export class BouncingParticles extends World {
           {x: -BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
           {x: BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
           {x: BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: -BouncingParticles.BOX_Z}
-        ]
+        ],
+        close: true
       },
       {
         coord: [
@@ -44,7 +46,8 @@ export class BouncingParticles extends World {
           {x: -BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
           {x: -BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z},
           {x: -BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: BouncingParticles.BOX_Z}
-        ]
+        ],
+        close: true
       },
       {
         coord: [
@@ -52,7 +55,8 @@ export class BouncingParticles extends World {
           {x: -BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z},
           {x: BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z},
           {x: BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: BouncingParticles.BOX_Z}
-        ]
+        ],
+        close: true
       },
       {
         coord: [
@@ -60,7 +64,8 @@ export class BouncingParticles extends World {
           {x: BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z},
           {x: BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
           {x: BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: -BouncingParticles.BOX_Z}
-        ]
+        ],
+        close: true
       }
     ];
 

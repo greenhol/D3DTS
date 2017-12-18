@@ -1,4 +1,4 @@
-import { World, SpaceCoord } from './world';
+import { World } from './world';
 
 export class Text extends World {
 
@@ -19,13 +19,13 @@ export class Text extends World {
             // {coord: {x: 0, y: 0, z: -2}},
             // {coord: {x: 0, y: 0, z: 2}}
         ];
-        this.shapes = [
-            {coord: [{x: -1, y: -1, z: -1}, {x: -1, y: 1, z: -1}, {x: -1, y: 1, z: 1}, {x: -1, y: -1, z: 1}]},
-            {coord: [{x: 1, y: -1, z: -1}, {x: 1, y: 1, z: -1}, {x: 1, y: 1, z: 1}, {x: 1, y: -1, z: 1}]},
-            {coord: [{x: -1, y: -1, z: -1}, {x: 1, y: -1, z: -1}, {x: 1, y: -1, z: 1}, {x: -1, y: -1, z: 1}]},
-            {coord: [{x: -1, y: 1, z: -1}, {x: 1, y: 1, z: -1}, {x: 1, y: 1, z: 1}, {x: -1, y: 1, z: 1}]},
-            {coord: [{x: -1, y: -1, z: -1}, {x: 1, y: -1, z: -1}, {x: 1, y: 1, z: -1}, {x: -1, y: 1, z: -1}]},
-            {coord: [{x: -1, y: -1, z: 1}, {x: 1, y: -1, z: 1}, {x: 1, y: 1, z: 1}, {x: -1, y: 1, z: 1}]}
+        this.paths = [
+            {coord: [{x: -1, y: -1, z: -1}, {x: -1, y: 1, z: -1}, {x: -1, y: 1, z: 1}, {x: -1, y: -1, z: 1}], close: true},
+            {coord: [{x: 1, y: -1, z: -1}, {x: 1, y: 1, z: -1}, {x: 1, y: 1, z: 1}, {x: 1, y: -1, z: 1}], close: true},
+            {coord: [{x: -1, y: -1, z: -1}, {x: 1, y: -1, z: -1}, {x: 1, y: -1, z: 1}, {x: -1, y: -1, z: 1}], close: true},
+            {coord: [{x: -1, y: 1, z: -1}, {x: 1, y: 1, z: -1}, {x: 1, y: 1, z: 1}, {x: -1, y: 1, z: 1}], close: true},
+            {coord: [{x: -1, y: -1, z: -1}, {x: 1, y: -1, z: -1}, {x: 1, y: 1, z: -1}, {x: -1, y: 1, z: -1}], close: true},
+            {coord: [{x: -1, y: -1, z: 1}, {x: 1, y: -1, z: 1}, {x: 1, y: 1, z: 1}, {x: -1, y: 1, z: 1}], close: true}
         ];
         this.texts = [{coord: {x: 0, y: 0, z: 0}, value: '(0,0,0)'}];
     }

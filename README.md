@@ -14,7 +14,7 @@ This is an [angular](https://angular.io/) App using [d3js](https://d3js.org/) an
 
 ## Instructions
 
-The stage is an angular component which has inputs for the camera position and rotation angles. Furthermore a 'setting' is described as a so-called 'world' (also an input of the stage) which includes a set of Space Coordinates (one for each dot) and optional animation methods for the set of dots as well as the camera position. There are a couple of sample worlds included. Creating a new world can be done by deriving from the World Class and providing an instance of it to the stage.
+The stage is an angular component which has inputs for the camera position and rotation angles. The drawn objects are defined in a so-called 'world' (also an input of the stage) which includes sets of different Space Coordinates for different types (dot, path, text) and optional animation methods for the data as well as the camera position. Creating a new world can be done by deriving from the World Class and providing an instance of it to the stage. There are a couple of sample worlds included.
 
 ## Samples
 

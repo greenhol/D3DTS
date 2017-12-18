@@ -1,4 +1,4 @@
-import { World, SpaceCoord, SpaceDot } from './world';
+import { World, SpaceDot } from './world';
 
 export class BellCurve extends World {
     private static SIZE = 15;

@@ -8,8 +8,9 @@ export interface SpaceDot {
     coord: SpaceCoord
 }
 
-export interface SpaceShape {
-    coord: SpaceCoord[]
+export interface SpacePath {
+    coord: SpaceCoord[],
+    close: boolean
 }
 
 export interface SpaceText {
@@ -26,18 +27,18 @@ export interface CameraPosition {
 
 export enum SpaceElementTypeEnum {
     DOT,
-    SHAPE,
+    PATH,
     TEXT
 }
 
 export abstract class World {
 
     public dots: SpaceDot[];
-    public shapes: SpaceShape[];
+    public paths: SpacePath[];
     public texts: SpaceText[];
 
     public drawOrder: SpaceElementTypeEnum[] = [
-        SpaceElementTypeEnum.SHAPE,
+        SpaceElementTypeEnum.PATH,
         SpaceElementTypeEnum.DOT,
         SpaceElementTypeEnum.TEXT
     ];
@@ -64,7 +65,7 @@ export abstract class World {
     
     public reset(): void {
         this.dots = [];
-        this.shapes = [];
+        this.paths = [];
         this.texts = [];
         this.cameraStartPosition = {
             position: {x: 0, y: 0, z: -5},

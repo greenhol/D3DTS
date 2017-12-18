@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewEncapsulation, Input } from '@angular/core';
 import { D3Service, D3, Selection } from 'd3-ng2-service';
-import { SpaceCoord, World, SpaceElementTypeEnum, SpaceDot, SpaceShape, SpaceText } from './../../data/world/world';
+import { SpaceCoord, World, SpaceElementTypeEnum, SpaceDot, SpacePath, SpaceText } from './../../data/world/world';
 import { Matrix, IdentityMatrix, RotaryMatrix, TranslateMatrix, AxisEnum } from './../../data/matrix/matrix';
 
 interface PlaneCoord {
@@ -19,8 +19,9 @@ interface StagePoint {
   dist: number;
 }
 
-interface StageShape {
+interface StagePath {
   world: SpaceCoord[];
+  close: boolean;
   pixel: PixelCoord[];
   dist: number;
 }
@@ -44,7 +45,7 @@ const STAGE_HEIGHT_HALF = STAGE_HEIGHT/2;;
 const STAGE_RATIO = STAGE_WIDTH / STAGE_HEIGHT;
 const STAGE_RATIO_INVERTED = STAGE_HEIGHT / STAGE_WIDTH;
 const STAGE_NEAR = 1;
-const STAGE_FAR = 20;
+const STAGE_FAR = 30;
 
 @Component({
   selector: 'd3d-stage',
@@ -99,8 +100,8 @@ export class StageComponent {
   
   private worldDots: SpaceDot[];
   private projectedDots: StagePoint[] = [];
-  private worldShapes: SpaceShape[];
-  private projectedShapes: StageShape[] = [];
+  private worldPaths: SpacePath[];
+  private projectedPaths: StagePath[] = [];
   private worldTexts: SpaceText[];
   private projectedTexts: StageText[] = [];
   private drawOrder: SpaceElementTypeEnum[];
@@ -158,7 +159,7 @@ export class StageComponent {
     
     if (!world) {
       this.worldDots = [];
-      this.worldShapes = [];
+      this.worldPaths = [];
       return;
     }
 
@@ -166,7 +167,7 @@ export class StageComponent {
     this.flushAnimation();
     
     this.worldDots = world.dots;
-    this.worldShapes = world.shapes;
+    this.worldPaths = world.paths;
     this.worldTexts = world.texts;
     this.drawOrder = world.drawOrder;
 
@@ -209,9 +210,9 @@ export class StageComponent {
     });
     this.projectedDots.sort((a: StagePoint, b: StagePoint) => a.dist - b.dist);
 
-    // Shapes
-    this.projectedShapes = this.worldShapes.map((shape: SpaceShape): StageShape => {
-      let v = shape.coord.map((vertex: SpaceCoord) => {
+    // Paths
+    this.projectedPaths = this.worldPaths.map((path: SpacePath): StagePath => {
+      let v = path.coord.map((vertex: SpaceCoord) => {
         return myMatrix.vectorMultiply(vertex);
       });
 
@@ -225,12 +226,12 @@ export class StageComponent {
       dist = Math.min.apply(Math, v.map((coord: SpaceCoord) => StageComponent.distanceToCamera(coord)));
       
       return {
-          world: shape.coord,
+          world: path.coord,
+          close: path.close,
           pixel: pixel,
           dist: (dist < 0) ? -1 : 1
       }
     });
-    // this.projectedShapes.sort((a: Shape, b: Shape) => a.dist - b.dist);
 
     // Texts
     this.projectedTexts = this.worldTexts.map((text: SpaceText): StageText => {
@@ -256,7 +257,7 @@ export class StageComponent {
       if (world.animateCoord) {
         world.animateCoord(t);
         this.worldDots = world.dots;
-        this.worldShapes = world.shapes;
+        this.worldPaths = world.paths;
       }
       if (world.animateCameraRotationX) {
         this.rxMatrix.angle = world.animateCameraRotationX(t);
@@ -291,8 +292,8 @@ export class StageComponent {
         case SpaceElementTypeEnum.DOT:
           this.createDots();
           break;
-        case SpaceElementTypeEnum.SHAPE:
-          this.createShapes();
+        case SpaceElementTypeEnum.PATH:
+          this.createPaths();
           break;
         case SpaceElementTypeEnum.TEXT:
           this.createTexts();
@@ -301,14 +302,14 @@ export class StageComponent {
     })
   }
 
-  private createShapes() {
+  private createPaths() {
     const shape = 'path';
     this.svgg.selectAll(`${shape}.${shape}`)
-      .data(this.projectedShapes)
+      .data(this.projectedPaths)
       .enter()
       .append(shape)
       .classed(shape, true)
-      .style('stroke', '#999')
+      .style('stroke', '#666')
       .style('fill', 'none')
       // .style('fill-opacity', 1)
       .style('stroke-opacity', 1)
@@ -330,7 +331,6 @@ export class StageComponent {
   }
 
   private createTexts() {
-    console.log('creating texts ', this.worldTexts);
     const shape = 'text';
     this.svgg.selectAll(`${shape}.${shape}`)
       .data(this.projectedTexts)
@@ -350,8 +350,8 @@ export class StageComponent {
         case SpaceElementTypeEnum.DOT:
           this.updateDots();
           break;
-        case SpaceElementTypeEnum.SHAPE:
-          this.updateShapes();
+        case SpaceElementTypeEnum.PATH:
+          this.updatePaths();
           break;
         case SpaceElementTypeEnum.TEXT:
           this.updateTexts();
@@ -360,17 +360,17 @@ export class StageComponent {
     })
   }
 
-  private updateShapes() {
+  private updatePaths() {
     const shape = 'path';
     this.svgg.selectAll(`${shape}.${shape}`)
-      .data(this.projectedShapes)
+      .data(this.projectedPaths)
       .classed('invisible', (d: StagePoint) => d.dist < 0)
-      .attr('d', (d: StageShape) => {
+      .attr('d', (d: StagePath) => {
         let p = 'M' + d.pixel[0].left + ' ' + d.pixel[0].top + ' ';
         for (let i = 1; i < d.pixel.length; i++) {
           p += 'L' + d.pixel[i].left + ' ' + d.pixel[i].top + ' ';
         }
-        return p + 'Z';
+        return d.close ? p + 'Z' : p;
       })
   }
 
