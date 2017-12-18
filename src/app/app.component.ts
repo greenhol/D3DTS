@@ -1,5 +1,6 @@
 import { Component, ApplicationRef, ViewChild } from '@angular/core';
 import { BellCurve } from './data/world/bell-curve';
+import { HilbertCurve } from './data/world/hilbert-curve';
 import { RandomPoints } from './data/world/random-points';
 import { CartesianAxes } from './data/world/cartesian-axes';
 import { Grid } from './data/world/grid';
@@ -30,7 +31,8 @@ export class AppComponent {
     {displayName: 'Grid', world: new Grid()},
     {displayName: 'Bouncing Particles', world: new BouncingParticles()},
     {displayName: 'CubeMesh', world: new CubeMesh()},
-    {displayName: 'Text', world: new Text()}    
+    {displayName: 'Text', world: new Text()},
+    {displayName: 'Hilbert Curve', world: new HilbertCurve()},    
   ];
   public worldSelector: WorldSelector = this.worlds[0];
   public world: World;
