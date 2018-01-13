@@ -258,6 +258,7 @@ export class StageComponent {
         world.animateCoord(t);
         this.worldDots = world.dots;
         this.worldPaths = world.paths;
+        this.worldTexts = world.texts;
       }
       if (world.animateCameraRotationX) {
         this.rxMatrix.angle = world.animateCameraRotationX(t);
@@ -310,8 +311,8 @@ export class StageComponent {
       .append(shape)
       .classed(shape, true)
       .style('stroke', '#666')
-      .style('fill', 'none')
-      // .style('fill-opacity', 1)
+      .style('fill', (d: StagePath) => d.close ? '#eee' : 'none')
+      .style('fill-opacity', (d: StagePath) => d.close ? 0.5 : 0)
       .style('stroke-opacity', 1)
       .style('stroke-width', 0.5);
   }
@@ -409,7 +410,7 @@ export class StageComponent {
       .classed('invisible', (d: StagePoint) => d.dist < 0)
       .attr('x', (d: StageText) => d.pixel.left)
       .attr('y', (d: StageText) => d.pixel.top)
-      .attr('font-size', (d: StageText) => d.dist > 0 ? d.dist * 120 + 'px' : '0px')
+      .attr('font-size', (d: StageText) => d.dist > 0 ? d.dist * 100 + 'px' : '0px')
       .text((d: StageText) => d.value);
   }
 

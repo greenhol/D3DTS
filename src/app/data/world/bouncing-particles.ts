@@ -10,8 +10,8 @@ interface Particle {
 
 export class BouncingParticles extends World {
   private static ACCELERATION = 0.01;
-  private static BOX_X = 2;
-  private static BOX_Z = 2;
+  private static BOX_X = 3;
+  private static BOX_Z = 3;
   private static BOX_HEIGHT = 5;
   private static CYLINDER = 2;
   private particles: Particle[];
@@ -27,45 +27,50 @@ export class BouncingParticles extends World {
           {x: -BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
           {x: BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
           {x: BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z},
-          {x: -BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z}
+          {x: -BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z},
+          {x: -BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
         ],
-        close: true
+        close: false
       },
       {
         coord: [
           {x: -BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: -BouncingParticles.BOX_Z},
           {x: -BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
           {x: BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
-          {x: BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: -BouncingParticles.BOX_Z}
+          {x: BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: -BouncingParticles.BOX_Z},
+          {x: -BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: -BouncingParticles.BOX_Z},
         ],
-        close: true
+        close: false
       },
       {
         coord: [
           {x: -BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: -BouncingParticles.BOX_Z},
           {x: -BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
           {x: -BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z},
-          {x: -BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: BouncingParticles.BOX_Z}
+          {x: -BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: BouncingParticles.BOX_Z},
+          {x: -BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: -BouncingParticles.BOX_Z},
         ],
-        close: true
+        close: false
       },
       {
         coord: [
           {x: -BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: BouncingParticles.BOX_Z},
           {x: -BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z},
           {x: BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z},
-          {x: BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: BouncingParticles.BOX_Z}
+          {x: BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: BouncingParticles.BOX_Z},
+          {x: -BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: BouncingParticles.BOX_Z},
         ],
-        close: true
+        close: false
       },
       {
         coord: [
           {x: BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: BouncingParticles.BOX_Z},
           {x: BouncingParticles.BOX_X, y: 0, z: BouncingParticles.BOX_Z},
           {x: BouncingParticles.BOX_X, y: 0, z: -BouncingParticles.BOX_Z},
-          {x: BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: -BouncingParticles.BOX_Z}
+          {x: BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: -BouncingParticles.BOX_Z},
+          {x: BouncingParticles.BOX_X, y: BouncingParticles.BOX_HEIGHT, z: BouncingParticles.BOX_Z},
         ],
-        close: true
+        close: false
       }
     ];
 

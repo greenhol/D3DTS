@@ -6,12 +6,12 @@ export class CubeMesh extends World {
         this.cameraStartPosition.position.z = -5;
         this.cameraStartPosition.angleX = Math.PI * 6 / 5 - Math.PI;
         this.paths = [
-            {coord: [{x: -1, y: -1, z: -1}, {x: -1, y: 1, z: -1}, {x: -1, y: 1, z: 1}, {x: -1, y: -1, z: 1}], close: true},
-            {coord: [{x: 1, y: -1, z: -1}, {x: 1, y: 1, z: -1}, {x: 1, y: 1, z: 1}, {x: 1, y: -1, z: 1}], close: true},
-            {coord: [{x: -1, y: -1, z: -1}, {x: 1, y: -1, z: -1}, {x: 1, y: -1, z: 1}, {x: -1, y: -1, z: 1}], close: true},
-            {coord: [{x: -1, y: 1, z: -1}, {x: 1, y: 1, z: -1}, {x: 1, y: 1, z: 1}, {x: -1, y: 1, z: 1}], close: true},
-            {coord: [{x: -1, y: -1, z: -1}, {x: 1, y: -1, z: -1}, {x: 1, y: 1, z: -1}, {x: -1, y: 1, z: -1}], close: true},
-            {coord: [{x: -1, y: -1, z: 1}, {x: 1, y: -1, z: 1}, {x: 1, y: 1, z: 1}, {x: -1, y: 1, z: 1}], close: true}
+            {coord: [{x: -1, y: -1, z: -1}, {x: -1, y: 1, z: -1}, {x: -1, y: 1, z: 1}, {x: -1, y: -1, z: 1}, {x: -1, y: -1, z: -1}], close: false},
+            {coord: [{x: 1, y: -1, z: -1}, {x: 1, y: 1, z: -1}, {x: 1, y: 1, z: 1}, {x: 1, y: -1, z: 1}, {x: 1, y: -1, z: -1}], close: false},
+            {coord: [{x: -1, y: -1, z: -1}, {x: 1, y: -1, z: -1}, {x: 1, y: -1, z: 1}, {x: -1, y: -1, z: 1}, {x: -1, y: -1, z: -1}], close: false},
+            {coord: [{x: -1, y: 1, z: -1}, {x: 1, y: 1, z: -1}, {x: 1, y: 1, z: 1}, {x: -1, y: 1, z: 1}, {x: -1, y: 1, z: -1}], close: false},
+            {coord: [{x: -1, y: -1, z: -1}, {x: 1, y: -1, z: -1}, {x: 1, y: 1, z: -1}, {x: -1, y: 1, z: -1}, {x: -1, y: -1, z: -1}], close: false},
+            {coord: [{x: -1, y: -1, z: 1}, {x: 1, y: -1, z: 1}, {x: 1, y: 1, z: 1}, {x: -1, y: 1, z: 1}, {x: -1, y: -1, z: 1}], close: false}
         ];
     }
 

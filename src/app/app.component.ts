@@ -10,6 +10,7 @@ import { CubeMesh } from './data/world/cube-mesh';
 import { Text } from './data/world/text';
 import { World } from 'app/data/world/world';
 import { StageComponent } from 'app/components/stage/stage.component';
+import { Chart2D } from 'app/data/world/chart2D';
 
 interface WorldSelector {
   displayName: string;
@@ -32,6 +33,7 @@ export class AppComponent {
     {displayName: 'Bouncing Particles', world: new BouncingParticles()},
     {displayName: 'CubeMesh', world: new CubeMesh()},
     {displayName: 'Text', world: new Text()},
+    {displayName: 'Chart 2D', world: new Chart2D()},    
     {displayName: 'Hilbert Curve', world: new HilbertCurve()},    
   ];
   public worldSelector: WorldSelector = this.worlds[0];

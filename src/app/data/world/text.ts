@@ -20,12 +20,12 @@ export class Text extends World {
             // {coord: {x: 0, y: 0, z: 2}}
         ];
         this.paths = [
-            {coord: [{x: -1, y: -1, z: -1}, {x: -1, y: 1, z: -1}, {x: -1, y: 1, z: 1}, {x: -1, y: -1, z: 1}], close: true},
-            {coord: [{x: 1, y: -1, z: -1}, {x: 1, y: 1, z: -1}, {x: 1, y: 1, z: 1}, {x: 1, y: -1, z: 1}], close: true},
-            {coord: [{x: -1, y: -1, z: -1}, {x: 1, y: -1, z: -1}, {x: 1, y: -1, z: 1}, {x: -1, y: -1, z: 1}], close: true},
-            {coord: [{x: -1, y: 1, z: -1}, {x: 1, y: 1, z: -1}, {x: 1, y: 1, z: 1}, {x: -1, y: 1, z: 1}], close: true},
-            {coord: [{x: -1, y: -1, z: -1}, {x: 1, y: -1, z: -1}, {x: 1, y: 1, z: -1}, {x: -1, y: 1, z: -1}], close: true},
-            {coord: [{x: -1, y: -1, z: 1}, {x: 1, y: -1, z: 1}, {x: 1, y: 1, z: 1}, {x: -1, y: 1, z: 1}], close: true}
+            {coord: [{x: -1, y: -1, z: -1}, {x: -1, y: 1, z: -1}, {x: -1, y: 1, z: 1}, {x: -1, y: -1, z: 1}, {x: -1, y: -1, z: -1}], close: false},
+            {coord: [{x: 1, y: -1, z: -1}, {x: 1, y: 1, z: -1}, {x: 1, y: 1, z: 1}, {x: 1, y: -1, z: 1}, {x: 1, y: -1, z: -1}], close: false},
+            {coord: [{x: -1, y: -1, z: -1}, {x: 1, y: -1, z: -1}, {x: 1, y: -1, z: 1}, {x: -1, y: -1, z: 1}, {x: -1, y: -1, z: -1}], close: false},
+            {coord: [{x: -1, y: 1, z: -1}, {x: 1, y: 1, z: -1}, {x: 1, y: 1, z: 1}, {x: -1, y: 1, z: 1}, {x: -1, y: 1, z: -1}], close: false},
+            {coord: [{x: -1, y: -1, z: -1}, {x: 1, y: -1, z: -1}, {x: 1, y: 1, z: -1}, {x: -1, y: 1, z: -1}, {x: -1, y: -1, z: -1}], close: false},
+            {coord: [{x: -1, y: -1, z: 1}, {x: 1, y: -1, z: 1}, {x: 1, y: 1, z: 1}, {x: -1, y: 1, z: 1}, {x: -1, y: -1, z: 1}], close: false}
         ];
         this.texts = [{coord: {x: 0, y: 0, z: 0}, value: '(0,0,0)'}];
     }
