@@ -13,24 +13,19 @@ interface PixelCoord {
   top: number;
 }
 
-interface StagePoint {
-  world: SpaceCoord;
+interface StagePoint extends SpaceDot {
   pixel: PixelCoord;
   dist: number;
 }
 
-interface StagePath {
-  world: SpaceCoord[];
-  close: boolean;
+interface StagePath extends SpacePath {
   pixel: PixelCoord[];
   dist: number;
 }
 
-interface StageText {
-  world: SpaceCoord;
+interface StageText extends SpaceText {
   pixel: PixelCoord;
   dist: number;
-  value: string;
 }
 
 // const STAGE_WIDTH = 1900;
@@ -160,6 +155,9 @@ export class StageComponent {
     if (!world) {
       this.worldDots = [];
       this.worldPaths = [];
+      this.worldTexts = [];
+      this.flushElements();
+      this.flushAnimation();
       return;
     }
 
@@ -203,7 +201,7 @@ export class StageComponent {
     this.projectedDots = this.worldDots.map((point: SpaceDot): StagePoint => {
       let v = myMatrix.vectorMultiply(point.coord);
       return {
-          world: point.coord,
+          coord: point.coord,
           pixel: StageComponent.spaceToPixel(v),
           dist: StageComponent.distanceToCamera(v)
       }
@@ -226,7 +224,7 @@ export class StageComponent {
       dist = Math.min.apply(Math, v.map((coord: SpaceCoord) => StageComponent.distanceToCamera(coord)));
       
       return {
-          world: path.coord,
+          coord: path.coord,
           close: path.close,
           pixel: pixel,
           dist: (dist < 0) ? -1 : 1
@@ -237,10 +235,10 @@ export class StageComponent {
     this.projectedTexts = this.worldTexts.map((text: SpaceText): StageText => {
       let v = myMatrix.vectorMultiply(text.coord);
       return {
-          world: text.coord,
+          coord: text.coord,
+          value: text.value,
           pixel: StageComponent.spaceToPixel(v),
-          dist: StageComponent.distanceToCamera(v),
-          value: text.value
+          dist: StageComponent.distanceToCamera(v)
       }
     });
     this.projectedTexts.sort((a: StageText, b: StageText) => a.dist - b.dist);
@@ -383,20 +381,20 @@ export class StageComponent {
       .attr('cx', (d: StagePoint) => d.pixel.left)
       .attr('cy', (d: StagePoint) => d.pixel.top)
       .attr('r', (d: StagePoint) => d.dist > 0 ? d.dist * 30 : 0);
-      // .style('stroke', (d: Point) => {
+      // .style('stroke', (d: StagePoint) => {
       //   let c = Math.round(-255*d.dist+255);
       //   return 'rgb(' + c + ', ' + c + ', ' + c + ')';
       // })
-      // .style('fill', (d: Point) => {
+      // .style('fill', (d: StagePoint) => {
       //   let c = Math.round(-150*d.dist+200);
       //   return 'rgb(' + c + ', ' + c + ', ' + c + ')';
-      // });
-      // .style('fill', (d: Point) => {
-      //   if (d.world.x == 0 && d.world.y == 0) {
+      // })
+      // .style('fill', (d: StagePoint) => {
+      //   if (d.world.coord.x == 0 && d.world.coord.y == 0) {
       //     return 'red';
-      //   } else if (d.world.y == 0 && d.world.z == 0) {
+      //   } else if (d.world.coord.y == 0 && d.world.coord.z == 0) {
       //     return 'blue';
-      //   } else if (d.world.z == 0 && d.world.x == 0) {
+      //   } else if (d.world.coord.z == 0 && d.world.coord.x == 0) {
       //     return 'green';
       //   }
       //   return '#eee';
