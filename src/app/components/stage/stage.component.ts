@@ -92,12 +92,10 @@ export class StageComponent {
   private ryMatrix: RotaryMatrix = new RotaryMatrix(AxisEnum.Y, 0);
   private rzMatrix: RotaryMatrix = new RotaryMatrix(AxisEnum.Z, 0);
   private tMatrix: TranslateMatrix = new TranslateMatrix({x: 0, y: 0, z: 0});
-  
-  private worldDots: SpaceDot[];
+
+  private currentWorld: World;
   private projectedDots: StagePoint[] = [];
-  private worldPaths: SpacePath[];
   private projectedPaths: StagePath[] = [];
-  private worldTexts: SpaceText[];
   private projectedTexts: StageText[] = [];
   private drawOrder: SpaceElementTypeEnum[];
 
@@ -153,9 +151,7 @@ export class StageComponent {
   public injectWorld(world: World): void {
     
     if (!world) {
-      this.worldDots = [];
-      this.worldPaths = [];
-      this.worldTexts = [];
+      this.currentWorld = undefined;
       this.flushElements();
       this.flushAnimation();
       return;
@@ -164,9 +160,7 @@ export class StageComponent {
     this.flushElements();    
     this.flushAnimation();
     
-    this.worldDots = world.dots;
-    this.worldPaths = world.paths;
-    this.worldTexts = world.texts;
+    this.currentWorld = world;
     this.drawOrder = world.drawOrder;
 
     this.rxMatrix.angle = world.cameraStartPosition.angleX;
@@ -179,7 +173,7 @@ export class StageComponent {
     this.updateElements();
 
     if (world.hasAnimation) {
-      this.startAnimation(world);
+      this.startAnimation();
     }
   }
 
@@ -198,7 +192,7 @@ export class StageComponent {
     myMatrix = myMatrix.inv;
 
     // Dots
-    this.projectedDots = this.worldDots.map((point: SpaceDot): StagePoint => {
+    this.projectedDots = this.currentWorld.dots.map((point: SpaceDot): StagePoint => {
       let v = myMatrix.vectorMultiply(point.coord);
       return {
           coord: point.coord,
@@ -209,7 +203,7 @@ export class StageComponent {
     this.projectedDots.sort((a: StagePoint, b: StagePoint) => a.dist - b.dist);
 
     // Paths
-    this.projectedPaths = this.worldPaths.map((path: SpacePath): StagePath => {
+    this.projectedPaths = this.currentWorld.paths.map((path: SpacePath): StagePath => {
       let v = path.coord.map((vertex: SpaceCoord) => {
         return myMatrix.vectorMultiply(vertex);
       });
@@ -232,7 +226,7 @@ export class StageComponent {
     });
 
     // Texts
-    this.projectedTexts = this.worldTexts.map((text: SpaceText): StageText => {
+    this.projectedTexts = this.currentWorld.texts.map((text: SpaceText): StageText => {
       let v = myMatrix.vectorMultiply(text.coord);
       return {
           coord: text.coord,
@@ -248,33 +242,30 @@ export class StageComponent {
     clearInterval(this.timer);
   }
 
-  private startAnimation(world: World) {
+  private startAnimation() {
     let t = 0;
     this.timer = setInterval(() => {
       t++;
-      if (world.animateCoord) {
-        world.animateCoord(t);
-        this.worldDots = world.dots;
-        this.worldPaths = world.paths;
-        this.worldTexts = world.texts;
+      if (this.currentWorld.animateCoord) {
+        this.currentWorld.animateCoord(t);
       }
-      if (world.animateCameraRotationX) {
-        this.rxMatrix.angle = world.animateCameraRotationX(t);
+      if (this.currentWorld.animateCameraRotationX) {
+        this.rxMatrix.angle = this.currentWorld.animateCameraRotationX(t);
       }
-      if (world.animateCameraRotationY) {
-        this.ryMatrix.angle = world.animateCameraRotationY(t);
+      if (this.currentWorld.animateCameraRotationY) {
+        this.ryMatrix.angle = this.currentWorld.animateCameraRotationY(t);
       }
-      if (world.animateCameraRotationZ) {
-        this.rzMatrix.angle = world.animateCameraRotationZ(t);
+      if (this.currentWorld.animateCameraRotationZ) {
+        this.rzMatrix.angle = this.currentWorld.animateCameraRotationZ(t);
       }
-      if (world.animateCameraPositionX) {
-        this.tMatrix.x = world.animateCameraPositionX(t);
+      if (this.currentWorld.animateCameraPositionX) {
+        this.tMatrix.x = this.currentWorld.animateCameraPositionX(t);
       }
-      if (world.animateCameraPositionY) {
-        this.tMatrix.y = world.animateCameraPositionY(t);
+      if (this.currentWorld.animateCameraPositionY) {
+        this.tMatrix.y = this.currentWorld.animateCameraPositionY(t);
       }
-      if (world.animateCameraPositionZ) {
-        this.tMatrix.z = world.animateCameraPositionZ(t);
+      if (this.currentWorld.animateCameraPositionZ) {
+        this.tMatrix.z = this.currentWorld.animateCameraPositionZ(t);
       }
       this.transform();
     }, 40);
