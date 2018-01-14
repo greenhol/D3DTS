@@ -292,20 +292,6 @@ export class StageComponent {
     })
   }
 
-  private createPaths() {
-    const shape = 'path';
-    this.svgg.selectAll(`${shape}.${shape}`)
-      .data(this.projectedPaths)
-      .enter()
-      .append(shape)
-      .classed(shape, true)
-      .style('stroke', '#666')
-      .style('fill', (d: StagePath) => d.close ? '#eee' : 'none')
-      .style('fill-opacity', (d: StagePath) => d.close ? 0.5 : 0)
-      .style('stroke-opacity', 1)
-      .style('stroke-width', 0.5);
-  }
-
   private createDots() {
     const shape = 'circle';
     this.svgg.selectAll(`${shape}.${shape}`)
@@ -313,11 +299,25 @@ export class StageComponent {
       .enter()
       .append(shape)
       .classed(shape, true)
-      .style('stroke', '#aaa')
-      .style('fill', '#ddd')
-      // .style('fill-opacity', 0.5)
-      // .style('stroke-opacity', 0.1)
-      .style('stroke-width', 1);
+      .style('stroke-width', this.currentWorld.dotsStyle.shape.strokeWidth)
+      .style('stroke', this.currentWorld.dotsStyle.shape.stroke)
+      .style('stroke-opacity', this.currentWorld.dotsStyle.shape.strokeOpacity)      
+      .style('fill', this.currentWorld.dotsStyle.shape.fill)
+      .style('fill-opacity', this.currentWorld.dotsStyle.shape.fillOpacity);
+  }
+
+  private createPaths() {
+    const shape = 'path';
+    this.svgg.selectAll(`${shape}.${shape}`)
+      .data(this.projectedPaths)
+      .enter()
+      .append(shape)
+      .classed(shape, true)
+      .style('stroke-width', this.currentWorld.pathsStyle.shape.strokeWidth)
+      .style('stroke', this.currentWorld.pathsStyle.shape.stroke)
+      .style('stroke-opacity', this.currentWorld.pathsStyle.shape.strokeOpacity)      
+      .style('fill', (d: StagePath) => d.close ? this.currentWorld.pathsStyle.shape.fill: 'none')
+      .style('fill-opacity', (d: StagePath) => d.close ? this.currentWorld.pathsStyle.shape.fillOpacity : 0);
   }
 
   private createTexts() {
@@ -327,11 +327,14 @@ export class StageComponent {
       .enter()
       .append(shape)
       .classed(shape, true)
-      .style('stroke', 'none')
-      .style('fill', '#999')
-      .attr('xml:space', 'preserve')
+      .attr('xml:space', 'preserve')      
+      .style('stroke-width', this.currentWorld.textsStyle.shape.strokeWidth)
+      .style('stroke', this.currentWorld.textsStyle.shape.stroke)
+      .style('stroke-opacity', this.currentWorld.textsStyle.shape.strokeOpacity)      
+      .style('fill', this.currentWorld.textsStyle.shape.fill)
+      .style('fill-opacity', this.currentWorld.textsStyle.shape.fillOpacity)
       // .style('text-anchor', 'middle')
-      .style('alignment-baseline', 'central');
+      .style('alignment-baseline', this.currentWorld.textsStyle.alignmentBaseline);
   }
 
   private updateElements() {
@@ -350,6 +353,16 @@ export class StageComponent {
     })
   }
 
+  private updateDots() {
+    const shape = 'circle';
+    this.svgg.selectAll(`${shape}.${shape}`)
+      .data(this.projectedDots)
+      .classed('invisible', (d: StagePoint) => d.dist < 0)
+      .attr('cx', (d: StagePoint) => d.pixel.left)
+      .attr('cy', (d: StagePoint) => d.pixel.top)
+      .attr('r', (d: StagePoint) => d.dist > 0 ? d.dist * 30 * this.currentWorld.dotsStyle.scale : 0);
+  }
+
   private updatePaths() {
     const shape = 'path';
     this.svgg.selectAll(`${shape}.${shape}`)
@@ -364,34 +377,6 @@ export class StageComponent {
       })
   }
 
-  private updateDots() {
-    const shape = 'circle';
-    this.svgg.selectAll(`${shape}.${shape}`)
-      .data(this.projectedDots)
-      .classed('invisible', (d: StagePoint) => d.dist < 0)
-      .attr('cx', (d: StagePoint) => d.pixel.left)
-      .attr('cy', (d: StagePoint) => d.pixel.top)
-      .attr('r', (d: StagePoint) => d.dist > 0 ? d.dist * 30 : 0);
-      // .style('stroke', (d: StagePoint) => {
-      //   let c = Math.round(-255*d.dist+255);
-      //   return 'rgb(' + c + ', ' + c + ', ' + c + ')';
-      // })
-      // .style('fill', (d: StagePoint) => {
-      //   let c = Math.round(-150*d.dist+200);
-      //   return 'rgb(' + c + ', ' + c + ', ' + c + ')';
-      // })
-      // .style('fill', (d: StagePoint) => {
-      //   if (d.world.coord.x == 0 && d.world.coord.y == 0) {
-      //     return 'red';
-      //   } else if (d.world.coord.y == 0 && d.world.coord.z == 0) {
-      //     return 'blue';
-      //   } else if (d.world.coord.z == 0 && d.world.coord.x == 0) {
-      //     return 'green';
-      //   }
-      //   return '#eee';
-      // });
-  }
-
   private updateTexts() {
     const shape = 'text';
     this.svgg.selectAll(`${shape}.${shape}`)
@@ -399,7 +384,7 @@ export class StageComponent {
       .classed('invisible', (d: StagePoint) => d.dist < 0)
       .attr('x', (d: StageText) => d.pixel.left)
       .attr('y', (d: StageText) => d.pixel.top)
-      .attr('font-size', (d: StageText) => d.dist > 0 ? d.dist * 100 + 'px' : '0px')
+      .attr('font-size', (d: StageText) => d.dist > 0 ? d.dist * 100 * this.currentWorld.textsStyle.scale + 'px' : '0px')
       .text((d: StageText) => d.value);
   }
 

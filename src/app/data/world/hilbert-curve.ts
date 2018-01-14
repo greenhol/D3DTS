@@ -27,6 +27,9 @@ export class HilbertCurve extends World {
                 close: false
             }
         ];
+        this.pathsStyle.shape.strokeWidth = 2;
+        this.pathsStyle.shape.stroke = 'steelblue';
+        this.pathsStyle.shape.strokeOpacity = 0.5;
     }
 
     public animateCoord() {

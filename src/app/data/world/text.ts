@@ -10,15 +10,8 @@ export class Text extends World {
         this.reset();
         this.cameraStartPosition.position.z = -5;
         this.cameraStartPosition.angleX = Math.PI * 6 / 5 - Math.PI;
-        this.dots = [
-            {coord: {x: 0, y: 0, z: 0}},
-            // {coord: {x: -2, y: 0, z: 0}},
-            // {coord: {x: 2, y: 0, z: 0}},
-            // {coord: {x: 0, y: -2, z: 0}},
-            // {coord: {x: 0, y: 2, z: 0}},
-            // {coord: {x: 0, y: 0, z: -2}},
-            // {coord: {x: 0, y: 0, z: 2}}
-        ];
+        this.dots = [{coord: {x: 0, y: 0, z: 0}}];
+        this.dotsStyle.scale = 2;
         this.paths = [
             {coord: [{x: -1, y: -1, z: -1}, {x: -1, y: 1, z: -1}, {x: -1, y: 1, z: 1}, {x: -1, y: -1, z: 1}, {x: -1, y: -1, z: -1}], close: false},
             {coord: [{x: 1, y: -1, z: -1}, {x: 1, y: 1, z: -1}, {x: 1, y: 1, z: 1}, {x: 1, y: -1, z: 1}, {x: 1, y: -1, z: -1}], close: false},
@@ -28,6 +21,7 @@ export class Text extends World {
             {coord: [{x: -1, y: -1, z: 1}, {x: 1, y: -1, z: 1}, {x: 1, y: 1, z: 1}, {x: -1, y: 1, z: 1}, {x: -1, y: -1, z: 1}], close: false}
         ];
         this.texts = [{coord: {x: 0, y: 0, z: 0}, value: '(0,0,0)'}];
+        this.textsStyle.scale = 1.25;
     }
 
     public animateCoord() {

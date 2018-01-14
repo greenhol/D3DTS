@@ -13,6 +13,11 @@ export class Chart2D extends World {
         this.cameraStartPosition.position.z = -3;
         this.cameraStartPosition.angleY = Chart2D.ANGLE_Y_AMP;
 
+        this.dotsStyle.shape.fill = 'steelblue';
+        this.dotsStyle.shape.stroke = 'none';
+        this.pathsStyle.shape.fill = '#aaf';
+        this.textsStyle.shape.fill = 'steelblue';
+
         this.animateCoord(0);
     }
 

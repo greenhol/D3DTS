@@ -4,8 +4,21 @@ export interface SpaceCoord {
     z: number;
 }
 
+export interface ShapeStyle {
+    strokeWidth: number;
+    stroke: string;
+    strokeOpacity: number;
+    fill: string;
+    fillOpacity: number;
+}
+
 export interface SpaceDot {
     coord: SpaceCoord
+}
+
+export interface DotsStyle {
+    shape: ShapeStyle;
+    scale: number;
 }
 
 export interface SpacePath {
@@ -13,9 +26,19 @@ export interface SpacePath {
     close: boolean
 }
 
+export interface PathsStyle {
+    shape: ShapeStyle;
+}
+
 export interface SpaceText {
     coord: SpaceCoord,
     value: string
+}
+
+export interface TextsStyle {
+    shape: ShapeStyle;
+    alignmentBaseline: string;
+    scale: number;
 }
 
 export interface CameraPosition {
@@ -34,8 +57,11 @@ export enum SpaceElementTypeEnum {
 export abstract class World {
 
     public dots: SpaceDot[];
+    public dotsStyle: DotsStyle;
     public paths: SpacePath[];
+    public pathsStyle: PathsStyle;
     public texts: SpaceText[];
+    public textsStyle: TextsStyle;
 
     public drawOrder: SpaceElementTypeEnum[] = [
         SpaceElementTypeEnum.PATH,
@@ -65,8 +91,39 @@ export abstract class World {
     
     public reset(): void {
         this.dots = [];
+        this.dotsStyle = {
+            shape: {
+                strokeWidth: 1,
+                stroke: '#aaa',
+                strokeOpacity: 1,
+                fill: '#ddd',
+                fillOpacity: 1
+            },
+            scale: 1
+        };
         this.paths = [];
+        this.pathsStyle = {
+            shape: {
+                strokeWidth: 0.5,
+                stroke: '#666',
+                strokeOpacity: 1,
+                fill: '#eee',
+                fillOpacity: 0.5
+            }
+        };
         this.texts = [];
+        this.textsStyle = {
+            shape: {
+                strokeWidth: 1,
+                stroke: 'none',
+                strokeOpacity: 1,
+                fill: '#999',
+                fillOpacity: 1
+            },
+            alignmentBaseline: 'central',
+            scale: 1
+        };
+
         this.cameraStartPosition = {
             position: {x: 0, y: 0, z: -5},
             angleX: 0,

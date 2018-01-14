@@ -6,7 +6,7 @@ export class Grid extends World {
     
     public init() {
         this.reset();
-        this.cameraStartPosition.position.z = -5;
+        this.cameraStartPosition.position.z = -3;
         this.cameraStartPosition.angleX = 0;
         this.cameraStartPosition.angleY = 0;
 

@@ -17,6 +17,9 @@ export class RandomPoints extends World {
       this.reset();
       this.cameraStartPosition.position.z = -5;
       this.cameraStartPosition.angleX = 0;
+
+      this.dotsStyle.shape.fill = '#dcedcb';
+      this.dotsStyle.shape.stroke = '#a2c67d';
       
       this.dots.push({coord: { x: 0, y: 0, z: 0 }});
       let dot: SpaceDot = JSON.parse(JSON.stringify(this.dots[0]));
