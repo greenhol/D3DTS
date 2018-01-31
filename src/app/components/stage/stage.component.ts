@@ -384,7 +384,10 @@ export class StageComponent {
       .classed('invisible', (d: StagePoint) => d.dist < 0)
       .attr('x', (d: StageText) => d.pixel.left)
       .attr('y', (d: StageText) => d.pixel.top)
-      .attr('font-size', (d: StageText) => d.dist > 0 ? d.dist * 100 * this.currentWorld.textsStyle.scale + 'px' : '0px')
+      .attr('font-size', (d: StageText) => {
+        if (this.currentWorld.textsStyle.fontSize != null) return this.currentWorld.textsStyle.fontSize;
+        return d.dist > 0 ? d.dist * 100 * this.currentWorld.textsStyle.scale + 'px' : '0px'
+      })
       .text((d: StageText) => d.value);
   }
 

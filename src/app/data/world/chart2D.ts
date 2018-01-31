@@ -4,7 +4,7 @@ export class Chart2D extends World {
     private static SIZE_Y = 4;
     private static DIST = 0.5;
     private static ANGLE_Y_AMP = Math.PI * 9 / 8 - Math.PI;
-    private Data: number[];
+    private data: number[];
     
     public init() {
         this.reset();
@@ -33,9 +33,9 @@ export class Chart2D extends World {
     }
 
     private createData(): void {
-        this.Data = [];
+        this.data = [];
         for (let i = 0; i < 18; i++) {
-            this.Data.push(4*Math.random());
+            this.data.push(4*Math.random());
         }
     }
 
@@ -46,20 +46,20 @@ export class Chart2D extends World {
         this.texts = [];
 
         // Data
-        for (let i = 0; i < this.Data.length; i++) {
-            this.dots.push({coord: {x: i * Chart2D.DIST, y: this.Data[i], z: 0}});
+        for (let i = 0; i < this.data.length; i++) {
+            this.dots.push({coord: {x: i * Chart2D.DIST, y: this.data[i], z: 0}});
             this.texts.push({
-                coord: {x: i * Chart2D.DIST, y: this.Data[i] + 0.25, z: 0},
-                value: this.Data[i].toFixed(1)
+                coord: {x: i * Chart2D.DIST, y: this.data[i] + 0.25, z: 0},
+                value: this.data[i].toFixed(1)
             })
         }
-        for (let i = 0; i < this.Data.length - 1; i++) {
+        for (let i = 0; i < this.data.length - 1; i++) {
             this.paths.push(
                 {
                     coord: [
                         {x: i * Chart2D.DIST, y: 0, z: 0},
-                        {x: i * Chart2D.DIST, y: this.Data[i], z: 0},
-                        {x: (i + 1) * Chart2D.DIST, y: this.Data[i + 1], z: 0},
+                        {x: i * Chart2D.DIST, y: this.data[i], z: 0},
+                        {x: (i + 1) * Chart2D.DIST, y: this.data[i + 1], z: 0},
                         {x: (i + 1) * Chart2D.DIST, y: 0, z: 0}
                     ],
                     close: true
@@ -73,7 +73,7 @@ export class Chart2D extends World {
                 {
                     coord: [
                         {x: 0, y: i, z: 0},
-                        {x: (this.Data.length-1) * Chart2D.DIST, y: i, z: 0}
+                        {x: (this.data.length-1) * Chart2D.DIST, y: i, z: 0}
                     ],
                     close: true
                 }
@@ -83,7 +83,7 @@ export class Chart2D extends World {
                 value: (i).toFixed(1)
             })
         }
-        for (let i = 0; i <= (this.Data.length-1) * Chart2D.DIST; i+= Chart2D.DIST) {
+        for (let i = 0; i <= (this.data.length-1) * Chart2D.DIST; i+= Chart2D.DIST) {
             this.paths.push(
                 {
                     coord: [
@@ -100,7 +100,7 @@ export class Chart2D extends World {
         }
 
         // Axis
-        this.paths.push({coord: [{x: -0.5, y: -0.1, z: 0}, {x: this.Data.length * Chart2D.DIST, y: -0.1, z: 0}], close: false});
+        this.paths.push({coord: [{x: -0.5, y: -0.1, z: 0}, {x: this.data.length * Chart2D.DIST, y: -0.1, z: 0}], close: false});
         this.paths.push({coord: [{x: -0.1, y: -0.5, z: 0}, {x: -0.1, y: Chart2D.SIZE_Y + 0.5, z: 0}], close: false});           
     }
     

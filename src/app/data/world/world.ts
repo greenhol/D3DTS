@@ -38,6 +38,7 @@ export interface SpaceText {
 export interface TextsStyle {
     shape: ShapeStyle;
     alignmentBaseline: string;
+    fontSize: string | null;
     scale: number;
 }
 
@@ -121,6 +122,7 @@ export abstract class World {
                 fillOpacity: 1
             },
             alignmentBaseline: 'central',
+            fontSize: null,
             scale: 1
         };
 
